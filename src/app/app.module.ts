@@ -1,16 +1,27 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+
+import { Api } from '../api/api';
+import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
+import { EnaploComponent } from './enaplo/enaplo.component';
+import { EnaploService } from './enaplo/enaplo.service';
 
-@NgModule({
+@NgModule( {
   declarations: [
-    AppComponent
+    AppComponent,
+    EnaploComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    AppRoutingModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+  providers: [ EnaploService ],
+  bootstrap: [ AppComponent ]
+} )
 export class AppModule { }
