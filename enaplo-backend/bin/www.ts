@@ -34,9 +34,11 @@ app.set( 'port', PORT );
 
 let webpack = require( 'webpack' );
 const webpackConfig = require( '../config/webpack.config' );
+webpackConfig.output.path = '/';
 const compiler = webpack( webpackConfig );
 app.use( require( 'webpack-dev-middleware' )( compiler, {
-  noInfo: false, publicPath: webpackConfig.output.publicPath
+  noInfo: false, publicPath: webpackConfig.output.publicPath,
+  filename: webpackConfig.output.filename
 }) );
 app.use( require( 'webpack-hot-middleware' )( compiler ) );
 
