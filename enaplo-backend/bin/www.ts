@@ -32,6 +32,7 @@ function getPort( val ) {
 
 app.set( 'port', PORT );
 
+/* Does not work yet
 let webpack = require( 'webpack' );
 const webpackConfig = require( '../config/webpack.config' );
 webpackConfig.output.path = '/';
@@ -41,6 +42,7 @@ app.use( require( 'webpack-dev-middleware' )( compiler, {
   filename: webpackConfig.output.filename
 }) );
 app.use( require( 'webpack-hot-middleware' )( compiler ) );
+*/
 
 /**
  * Create HTTP server.

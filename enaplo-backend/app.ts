@@ -8,10 +8,6 @@ import * as routes from './server/routes';
 
 const app = express();
 
-// view engine setup
-app.set( 'views', `${root}/server/views/` );
-app.set( 'view engine', 'ejs' );
-
 app.use( logger( 'dev' ) );
 app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded( {
@@ -19,6 +15,11 @@ app.use( bodyParser.urlencoded( {
 }) );
 
 app.use( cookieParser() );
+
+// https://www.npmjs.com/package/cors
+var cors = require( 'cors' );
+// use it before all route definitions
+app.use( cors( { origin: 'http://localhost:4200' }) );
 
 app.use( '/', routes );
 
