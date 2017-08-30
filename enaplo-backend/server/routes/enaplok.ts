@@ -6,7 +6,7 @@ export class RouterEnaplok {
     router.get( '/api/enaplok', ( request: express.Request, response: express.Response, next: express.NextFunction ) => {
       response.json(
         {
-          type: "proxy",
+          type: "proxyx",
           url: "http://localhost:3000/enaplo_demo/ajax?method=enaplok_adatok&id=%23page_enaplok&htmlid=${htmlid}&_=${time}"
         }
       );

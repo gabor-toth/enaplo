@@ -12,17 +12,20 @@ module.exports = {
     externals: [nodeExternals({
         whitelist: ['webpack/hot/poll?1000']
     })],
-    /*
+    resolve: {
+        extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
+        //extensions: [ '.js'],
+    },
     module: {
-        rules: [{
-            test: /\.js?$/,
-            use: 'babel-loader',
-            exclude: /node_modules/
+        loaders: [{
+            // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
+            test: /\.tsx?$/,
+            exclude: '/node_modules',
+            loader: 'ts-loader'
         }]
     },
-    */
     plugins: [
-        new StartServerPlugin('server.js'),
+        new StartServerPlugin('bundle.js'),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
@@ -33,7 +36,7 @@ module.exports = {
         }),
     ],
     output: {
-        path: path.join(__dirname, '.build'),
-        filename: 'server.js'
+        path: path.join(__dirname, '..','.build'),
+        filename: 'bundle.js'
     }
 }
