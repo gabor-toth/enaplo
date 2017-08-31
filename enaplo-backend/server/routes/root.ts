@@ -5,7 +5,7 @@ export class RouterRoot {
     router.get( '/', ( request: express.Request, response: express.Response, next: express.NextFunction ) => {
       response.render( 'index', {
         title: 'E-Napló'
-      });
-    });
+      } );
+    } );
   }
 }

@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "postinstall": "node node_modules/typings/dist/bin.js install --overwrite",
+    "build": "node node_modules/webpack/bin/webpack.js --config config/webpack.config.server.js",
     "start": "rm -rf ./.build && webpack --config config/webpack.config.server.js"
   },
   "main": "",
@@ -33,10 +33,11 @@
     "@types/esprima": "^4.0.0",
     "ts-loader": "^2.3.0",
     "typescript": "^2.5.0",
-    "typings": "^2.1.0",
-    "webpack": "^2.0.0"
+    "webpack": "^3.5.5"
   },
   "devDependenciesSaved": {
+    "postinstall": "node node_modules/typings/dist/bin.js install --overwrite",
+    "typings": "^2.1.0",
     "@types/webpack-env": "^1.13.0"
   }
 }
