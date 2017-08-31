@@ -1,7 +1,7 @@
 {
-  "name": "webpack-express-typescript",
-  "version": "1.0.0",
-  "description": "Easy starter project for writing modern Express Applications using TypeScript, and Webpack",
+  "name": "enaplo-backend",
+  "version": "0.1.0",
+  "description": "Enaplo backend system",
   "private": true,
   "directories": {
     "test": "tests"
@@ -11,36 +11,32 @@
     "start": "rm -rf ./.build && webpack --config config/webpack.config.server.js"
   },
   "main": "",
-  "keywords": [
-    "Easy",
-    "TypeScript",
-    "Starter",
-    "Template"
-  ],
-  "author": "Rick Hernandez",
+  "author": "Gabor Toth",
   "license": "MIT",
-  "devDependencies": {
-    "@types/esprima": "^2.1.34",
-    "@types/webpack-env": "^1.13.0",
-    "ts-loader": "^0.8.2",
-    "typescript": "^1.8.10",
-    "typings": "^1.3.3",
-    "webpack": "^2.0.0"
-  },
   "repository": {
     "type": "git",
     "url": ""
   },
   "dependencies": {
-    "app-root-path": "^1.3.0",
+    "app-root-path": "^2.0.1",
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
-    "ejs": "^2.5.1",
+    "ejs": "^2.5.7",
     "esprima": "^4.0.0",
-    "express": "^4.14.0",
-    "morgan": "^1.7.0",
+    "express": "^4.15.4",
+    "morgan": "^1.8.2",
     "start-server-webpack-plugin": "^2.2.0",
     "webpack-node-externals": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/esprima": "^4.0.0",
+    "ts-loader": "^2.3.0",
+    "typescript": "^2.5.0",
+    "typings": "^2.1.0",
+    "webpack": "^2.0.0"
+  },
+  "devDependenciesSaved": {
+    "@types/webpack-env": "^1.13.0"
   }
 }
