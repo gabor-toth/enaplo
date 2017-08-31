@@ -1,0 +1,18 @@
+{
+  "plugins": {
+    "guess-types": {
+      
+    },
+    "node": {
+      
+    },
+    "chrome-apps": {
+      
+    }
+  },
+  "libs": [
+    "ecma5",
+    "browser"
+  ],
+  "ecmaVersion": 6
+}
