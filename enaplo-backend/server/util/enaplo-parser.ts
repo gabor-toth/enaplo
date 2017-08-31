@@ -1,4 +1,4 @@
-var esprima = require( 'esprima' );
+import * as esprima from 'esprima';
 
 export class EnaploParser {
   private ast: any;

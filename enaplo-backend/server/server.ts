@@ -5,6 +5,7 @@ import * as bodyParser from 'body-parser';
 import * as root from 'app-root-path';
 import * as path from 'path';
 import * as cookieParser from 'cookie-parser';
+import * as cors from 'cors';
 
 const app = express();
 
@@ -17,13 +18,12 @@ app.use( logger( 'dev' ) );
 app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded( {
   extended: false
-}) );
+} ) );
 app.use( cookieParser() );
 
 // cors for rest, see https://www.npmjs.com/package/cors
 // use it before all route definitions
-var cors = require( 'cors' );
-app.use( cors( { origin: 'http://localhost:4200' }) );
+app.use( cors( { origin: 'http://localhost:4200' } ) );
 
 // routes
 app.use( '/', routes );
@@ -33,7 +33,7 @@ app.use(( req: express.Request, res: express.Response, next: express.NextFunctio
   let err: any = new Error( 'Not Found' );
   err.status = 404;
   next( err );
-});
+} );
 
 app.use( function( err: any, req: express.Request, res: express.Response, next: Function ) {
   res.status( err.status || 500 );
@@ -41,7 +41,7 @@ app.use( function( err: any, req: express.Request, res: express.Response, next: 
     message: err.message,
     // development error handler will print stacktrace
     error: app.get( 'env' ) === 'development' ? err : {}
-  });
-});
+  } );
+} );
 
 export default app;

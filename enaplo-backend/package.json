@@ -35,9 +35,7 @@
     "typescript": "^2.5.0",
     "webpack": "^3.5.5"
   },
-  "devDependenciesSaved": {
-    "postinstall": "node node_modules/typings/dist/bin.js install --overwrite",
-    "typings": "^2.1.0",
+  "savedForLaterUse": {
     "@types/webpack-env": "^1.13.0"
   }
 }

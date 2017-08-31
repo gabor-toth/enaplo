@@ -1,18 +1,18 @@
-import * as express from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { EnaploParser } from '../util/enaplo-parser';
 
 export class RouterEnaplok {
-  register( router: express.Router ) {
-    router.get( '/api/enaplok', ( request: express.Request, response: express.Response, next: express.NextFunction ) => {
+  register( router: Router ) {
+    router.get( '/api/enaplok', ( request: Request, response: Response, next: NextFunction ) => {
       response.json(
         {
           type: "proxy",
           url: "http://localhost:3000/enaplo_demo/ajax?method=enaplok_adatok&id=%23page_enaplok&htmlid=${htmlid}&_=${time}"
         }
       );
-    });
+    } );
 
-    router.post( '/api/enaplok', ( request: express.Request, response: express.Response, next: express.NextFunction ) => {
+    router.post( '/api/enaplok', ( request: Request, response: Response, next: NextFunction ) => {
       const data = request.body.data;
       const jsParser = new EnaploParser( data );
       const htmlData = jsParser.findJqueryDomIdHtmlCallParameter( 'enaploAktaFa' );
@@ -28,7 +28,7 @@ export class RouterEnaplok {
           ]
         }
       );
-    });
+    } );
   }
 }
 

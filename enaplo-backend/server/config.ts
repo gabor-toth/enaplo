@@ -1,4 +1,6 @@
+//import { Container, Inject, Service } from "typedi";
 
+//@Service
 export class EnaploConfig {
   private urlBase: string;
 
