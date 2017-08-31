@@ -15,7 +15,8 @@ app.set( 'view engine', 'ejs' );
 
 // modules
 app.use( logger( 'dev' ) );
-app.use( bodyParser.json() );
+app.use( bodyParser.text( "text" ) );
+//app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded( {
   extended: false
 } ) );
@@ -36,6 +37,7 @@ app.use(( req: express.Request, res: express.Response, next: express.NextFunctio
 } );
 
 app.use( function( err: any, req: express.Request, res: express.Response, next: Function ) {
+  console.error( err );
   res.status( err.status || 500 );
   res.render( 'error', {
     message: err.message,

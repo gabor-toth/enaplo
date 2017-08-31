@@ -1,7 +1,8 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import { BaseRouter } from './base-router';
 import { EnaploParser } from '../util/enaplo-parser';
 
-export class RouterEnaplok {
+export class RouterEnaplok extends BaseRouter {
   register( router: Router ) {
     router.get( '/api/enaplok', ( request: Request, response: Response, next: NextFunction ) => {
       response.json(
@@ -13,7 +14,11 @@ export class RouterEnaplok {
     } );
 
     router.post( '/api/enaplok', ( request: Request, response: Response, next: NextFunction ) => {
-      const data = request.body.data;
+      const data = request.body;
+      if ( !this.checkParameter( response, "body", data ) ) {
+        return;
+      }
+
       const jsParser = new EnaploParser( data );
       const htmlData = jsParser.findJqueryDomIdHtmlCallParameter( 'enaploAktaFa' );
       //var htmlStructure = htmlParser.get( '/ul/li/div[azon]', '/ul/li/div/strong' );
