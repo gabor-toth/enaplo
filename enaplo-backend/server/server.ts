@@ -8,13 +8,14 @@ import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
 
 const app = express();
+const isDev = app.get( 'env' ) === 'development';
 
 // view engine setup
 app.set( 'views', path.join( root.path, 'server/views/' ) );
 app.set( 'view engine', 'ejs' );
 
 // modules
-app.use( logger( 'dev' ) );
+app.use( logger( isDev ? 'dev' : 'combined' ) );
 app.use( bodyParser.text( "text" ) );
 //app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded( {
@@ -30,19 +31,27 @@ app.use( cors( { origin: 'http://localhost:4200' } ) );
 app.use( '/', routes );
 
 // catch 404 and forward to error handler
-app.use(( req: express.Request, res: express.Response, next: express.NextFunction ) => {
-  let err: any = new Error( 'Not Found' );
-  err.status = 404;
-  next( err );
+app.use(( request: express.Request, response: express.Response, next: express.NextFunction ) => {
+  const error: any = new Error( 'Not Found' );
+  error.status = 404;
+  next( error );
 } );
 
-app.use( function( err: any, req: express.Request, res: express.Response, next: Function ) {
-  console.error( err );
-  res.status( err.status || 500 );
-  res.render( 'error', {
-    message: err.message,
-    // development error handler will print stacktrace
-    error: app.get( 'env' ) === 'development' ? err : {}
+function mapExceptionToStatusCode( error: any ) {
+  const exceptionClass = error.constructor.name;
+  if ( "SyntaxError" == exceptionClass ) {
+    error.status = 400;
+  }
+}
+app.use( function( error: any, request: express.Request, response: express.Response, next: Function ) {
+  console.error( error );
+  mapExceptionToStatusCode( error );
+  var status = error.status || 500;
+  response.status( status );
+  response.render( 'error', {
+    message: error.message,
+    // development error handler will print stacktrace for internal server errors
+    error: isDev && status == 500 ? error : {}
   } );
 } );
 

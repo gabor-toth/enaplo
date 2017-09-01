@@ -3,8 +3,9 @@
 import http from 'http';
 import app from './server';
 
-const server = http.createServer(app);
 let currentApp = app;
+
+const server = http.createServer(app);
 server.listen(3000);
 
 if (module.hot) {

@@ -25,12 +25,16 @@
     "ejs": "^2.5.7",
     "esprima": "^4.0.0",
     "express": "^4.15.4",
+    "htmlparser2": "^3.9.2",
     "morgan": "^1.8.2",
+    "slashes": "^1.0.5",
     "start-server-webpack-plugin": "^2.2.0",
     "webpack-node-externals": "^1.6.0"
   },
   "devDependencies": {
     "@types/esprima": "^4.0.0",
+    "@types/htmlparser2": "^3.7.30",
+    "@types/morgan": "^1.7.32",
     "@types/node": "^8.0.26",
     "ts-loader": "^2.3.0",
     "typescript": "^2.5.0",
