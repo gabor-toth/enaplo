@@ -11,20 +11,23 @@ export class Szemely {
 export class Szerepkor {
   public _type: string;
   public id: string;
+  public azonosito: string;
   public nev: string;
 
-  constructor( nev?: string ) {
+  constructor( azonosito?: string ) {
     this._type = ( this as any ).constructor.name;
-    this.nev = nev;
+    this.azonosito = azonosito;
   }
 }
 
 export class Naplo {
   public _type: string;
-  public id: string;
-  public azon: string;
+  public sorszam: string;
+  public azonosito: string;
   public nev: string;
-  public cim: string;
+  public telepules: string;
+  public iranyitoszam: string;
+  public helyrajziszam: string;
   public tulajdonos: Szemely;
   public szerepkorok: Array<Szerepkor>;
 
@@ -36,8 +39,8 @@ export class Naplo {
 
 export class Fonaplo {
   public _type: string;
-  public id: string;
-  public azon: string;
+  public sorszam: string;
+  public azonosito: string;
   public nev: string;
   public cim: string;
   public tulajdonos: Szemely;

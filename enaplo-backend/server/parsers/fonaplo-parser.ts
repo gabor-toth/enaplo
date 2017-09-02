@@ -1,7 +1,4 @@
-//import * as esprima from 'esprima';
-import * as slashes from 'slashes';
-import { Handler } from 'htmlparser2';
-import { BaseParser } from './base-parser';
+import { BaseParser, Handler } from './base-parser';
 import { Fonaplo, Szemely, Szerepkor } from '../model/enaplo';
 
 class FonaploCollector implements Handler {
@@ -16,15 +13,16 @@ class FonaploCollector implements Handler {
   public onopentag( tagname: string, attributes: { [ type: string ]: string } ): void {
     if ( tagname === 'div' ) {
       this.item = new Fonaplo();
-      this.item.id = attributes.azon;
+      this.item.sorszam = attributes.azon;
       this.inDiv = true;
     }
   }
 
   public ontext( text: string ): void {
     if ( this.inDiv ) {
-      this.processData( text );
-      this.inDiv = false;
+      if ( this.processData( text ) ) {
+        this.inDiv = false;
+      }
     }
   }
 
@@ -34,7 +32,11 @@ class FonaploCollector implements Handler {
     }
   }
 
-  private processData( text: string ): void {
+  private processData( text: string ): boolean {
+    text = text.trim();
+    if ( text.length == 0 ) {
+      return false;
+    }
     // 2017/1347/4-2 alap (Építtető, Kivitelező - napijelentésért felelős, Kivitelező - napijelentésre jogosult)
     var regex = /^([0-9\-/]+) (.+) \((.+(,.+)*)\)$/;
     var matches = regex.exec( text );
@@ -42,15 +44,19 @@ class FonaploCollector implements Handler {
       throw new SyntaxError( "Unparseable fonaplo data: '" + text + "'" );
     }
 
-    this.item.azon = matches[ 1 ];
-    this.item.nev = matches[ 2 ];
-    const roles = matches[ 3 ].split( ', ' );
+    let index = 1;
+    this.item.azonosito = matches[ index++ ];
+    this.item.nev = matches[ index++ ];
+    const roles = matches[ index++ ].split( ', ' );
     for ( let role of roles ) {
+      // TODO : "(Nem értelmezett)"
       this.item.szerepkorok.push( new Szerepkor( role ) );
     }
 
     this.items.push( this.item );
     this.item = null;
+
+    return true;
   }
 
   public getData(): Array<Fonaplo> {

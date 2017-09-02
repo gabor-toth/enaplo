@@ -1,14 +1,14 @@
 import * as express from 'express';
-import * as Routers from './routes/exports';
+import { RouterRoot, RouterEnaplo, RouterSimulator } from './routes/exports';
 import config from './config';
 
 const router = express.Router();
 
-new Routers.RouterRoot().register( router );
-new Routers.RouterEnaplo().register( router );
+new RouterRoot().register( router );
+new RouterEnaplo().register( router );
 
 if ( config.hasSimulator ) {
-  new Routers.RouterSimulator().register( router );
+  new RouterSimulator().register( router );
 }
 
 export = router;

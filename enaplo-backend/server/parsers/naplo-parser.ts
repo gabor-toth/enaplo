@@ -1,7 +1,4 @@
-//import * as esprima from 'esprima';
-import * as slashes from 'slashes';
-import { Handler } from 'htmlparser2';
-import { BaseParser } from './base-parser';
+import { BaseParser, Handler } from './base-parser';
 import { Naplo, Szemely } from '../model/enaplo';
 
 class NaploCollector implements Handler {
@@ -16,7 +13,7 @@ class NaploCollector implements Handler {
   public onopentag( tagname: string, attributes: { [ type: string ]: string } ): void {
     if ( tagname === 'div' ) {
       this.item = new Naplo();
-      this.item.id = attributes.azon;
+      this.item.sorszam = attributes.azon;
     } else if ( tagname == 'strong' ) {
       this.inStrong = true;
     }
@@ -30,18 +27,21 @@ class NaploCollector implements Handler {
 
   private processData( text: string ): void {
     // 2017/340/7 ház2: 1039 Budajenő HRSZ:1234 (Gabtoth72 - 235847809)
-    var regex = /^([0-9/]+) ([^:]+): (.+) \((.+) - ([0-9]+)\)$/;
+    var regex = /^([0-9/]+) (.+): (.+) (.+) HRSZ:(.+) \((.+) - ([0-9]+)\)$/;
     var matches = regex.exec( text );
-    if ( matches == null || matches.length != 6 ) {
+    if ( matches == null || matches.length != 8 ) {
       throw new SyntaxError( "Unparseable naplo data: '" + text + "'" );
     }
 
-    this.item.azon = matches[ 1 ];
-    this.item.nev = matches[ 2 ];
-    this.item.cim = matches[ 3 ];
+    let index = 1;
+    this.item.azonosito = matches[ index++ ];
+    this.item.nev = matches[ index++ ];
+    this.item.iranyitoszam = matches[ index++ ];
+    this.item.telepules = matches[ index++ ];
+    this.item.helyrajziszam = matches[ index++ ];
     this.item.tulajdonos = new Szemely();
-    this.item.tulajdonos.nev = matches[ 4 ];
-    this.item.tulajdonos.nuj = matches[ 5 ];
+    this.item.tulajdonos.nev = matches[ index++ ];
+    this.item.tulajdonos.nuj = matches[ index++ ];
 
     this.items.push( this.item );
     this.item = null;

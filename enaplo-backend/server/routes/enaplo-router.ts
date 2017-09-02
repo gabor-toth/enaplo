@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { BaseRouter } from './base-router';
-import * as Parsers from '../parsers/exports';
+import { FonaploParser, NaploParser } from '../parsers/exports';
 import { ApiResponse } from '../model/api-response';
 
 export class RouterEnaplo extends BaseRouter {
@@ -10,7 +10,7 @@ export class RouterEnaplo extends BaseRouter {
     } );
 
     router.post( '/api/enaplok', ( request: Request, response: Response, next: NextFunction ) => {
-      this.parseBody( request, response, new Parsers.NaploParser() );
+      this.parseBody( request, response, new NaploParser() );
     } );
 
     router.get( '/api/enaplo/:id', ( request: Request, response: Response, next: NextFunction ) => {
@@ -22,7 +22,7 @@ export class RouterEnaplo extends BaseRouter {
     } );
 
     router.post( '/api/enaplo/:id', ( request: Request, response: Response, next: NextFunction ) => {
-      this.parseBody( request, response, new Parsers.FonaploParser() );
+      this.parseBody( request, response, new FonaploParser() );
     } );
   }
 }

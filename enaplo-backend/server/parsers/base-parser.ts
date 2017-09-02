@@ -1,6 +1,8 @@
 import * as slashes from 'slashes';
 import { Parser, Handler, Options } from 'htmlparser2';
 
+export { Handler } from 'htmlparser2';
+
 export abstract class BaseParser {
   private data: string;
   private position: number;
