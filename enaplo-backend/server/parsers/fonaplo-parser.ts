@@ -1,6 +1,43 @@
 import { BaseParser, Handler } from './base-parser';
 import { Fonaplo, Szemely, Szerepkor } from '../model/enaplo';
 
+class StringSplitter {
+  constructor( private text: string ) {
+  }
+
+  public parenthesedEnd(): string {
+    let text = this.text;
+    let index = text.length - 1;
+    if ( text.charAt( index ) != ')' ) {
+      return null;
+    }
+
+    index--;
+    let result = "";
+    let nesting = 0;
+    while ( index >= 0 ) {
+      let c = text.charAt( index );
+      if ( c == ')' ) {
+        nesting++;
+      } else if ( c == '(' ) {
+        if ( nesting == 0 ) {
+          break;
+        }
+        nesting--;
+      }
+      result = c + result;
+      index--;
+    }
+
+    this.text = text.substring( 0, index );
+    return result;
+  }
+
+  get rest() {
+    return this.text;
+  }
+}
+
 class FonaploCollector implements Handler {
   private items: Array<Fonaplo>;
   private item: Fonaplo;
@@ -13,7 +50,9 @@ class FonaploCollector implements Handler {
   public onopentag( tagname: string, attributes: { [ type: string ]: string } ): void {
     if ( tagname === 'div' ) {
       this.item = new Fonaplo();
-      this.item.sorszam = attributes.azon;
+      const ids = attributes.azon.split( '|' );
+      this.item.naplosorszam = ids[ 0 ];
+      this.item.sorszam = ids[ 1 ];
       this.inDiv = true;
     }
   }
@@ -37,19 +76,23 @@ class FonaploCollector implements Handler {
     if ( text.length == 0 ) {
       return false;
     }
-    // 2017/1347/4-2 alap (Építtető, Kivitelező - napijelentésért felelős, Kivitelező - napijelentésre jogosult)
-    var regex = /^([0-9\-/]+) (.+) \((.+(,.+)*)\)$/;
-    var matches = regex.exec( text );
-    if ( matches == null || matches.length != 5 ) {
+    // 2017/1347/4-2 alap (Építtető, Kivitelező - napijelentésért felelős, Kivitelező - napijelentésre jogosult, Építési műszaki ellenőr (Építészet))
+    const splitter = new StringSplitter( text );
+    const roles = splitter.parenthesedEnd();
+
+    text = splitter.rest;
+    const regex = /^([0-9\-/]+) (.+)\s*$/;
+    const matches = regex.exec( text );
+
+    if ( roles == null || matches == null || matches.length != 3 ) {
       throw new SyntaxError( "Unparseable fonaplo data: '" + text + "'" );
     }
 
     let index = 1;
     this.item.azonosito = matches[ index++ ];
     this.item.nev = matches[ index++ ];
-    const roles = matches[ index++ ].split( ', ' );
-    for ( let role of roles ) {
-      // TODO : "(Nem értelmezett)"
+
+    for ( let role of roles.split( ', ' ) ) {
       this.item.szerepkorok.push( new Szerepkor( role ) );
     }
 

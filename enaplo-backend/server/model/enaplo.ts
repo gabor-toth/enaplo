@@ -40,6 +40,7 @@ export class Naplo {
 export class Fonaplo {
   public _type: string;
   public sorszam: string;
+  public naplosorszam: string;
   public azonosito: string;
   public nev: string;
   public cim: string;
