@@ -2,11 +2,12 @@
 
 import http from 'http';
 import app from './server';
+import config from './config';
 
 let currentApp = app;
 
 const server = http.createServer(app);
-server.listen(3000);
+server.listen(config.listenOnPort);
 
 if (module.hot) {
 	module.hot.accept('./server', () => {

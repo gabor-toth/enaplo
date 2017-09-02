@@ -2,20 +2,20 @@
 import * as slashes from 'slashes';
 import { Handler } from 'htmlparser2';
 import { BaseParser } from './base-parser';
-import { Enaplo, Szemely } from '../model/enaplo';
+import { Naplo, Szemely } from '../model/enaplo';
 
-class EnaplokCollector implements Handler {
-  private items: Array<Enaplo>;
+class NaploCollector implements Handler {
+  private items: Array<Naplo>;
   private inStrong: boolean;
-  private item: Enaplo;
+  private item: Naplo;
 
   constructor() {
-    this.items = new Array;
+    this.items = new Array<Naplo>();
   }
 
   public onopentag( tagname: string, attributes: { [ type: string ]: string } ): void {
     if ( tagname === 'div' ) {
-      this.item = new Enaplo();
+      this.item = new Naplo();
       this.item.id = attributes.azon;
     } else if ( tagname == 'strong' ) {
       this.inStrong = true;
@@ -30,13 +30,12 @@ class EnaplokCollector implements Handler {
 
   private processData( text: string ): void {
     // 2017/340/7 ház2: 1039 Budajenő HRSZ:1234 (Gabtoth72 - 235847809)
-    var regex = /([0-9/]+)\s+([^:]+):\s+(.+) \((.+) - ([0-9]+)\)/;
+    var regex = /^([0-9/]+) ([^:]+): (.+) \((.+) - ([0-9]+)\)$/;
     var matches = regex.exec( text );
     if ( matches == null || matches.length != 6 ) {
-      throw new SyntaxError( "Unparseable data: '" + text + "'" );
+      throw new SyntaxError( "Unparseable naplo data: '" + text + "'" );
     }
 
-    // { azon: '2017/340/7', nev: 'ház2', cim: '1039 Budajenő HRSZ:1234', tulajdonos: { nev: 'Gabtoth72', nuj: '235847809' }
     this.item.azon = matches[ 1 ];
     this.item.nev = matches[ 2 ];
     this.item.cim = matches[ 3 ];
@@ -48,16 +47,16 @@ class EnaplokCollector implements Handler {
     this.item = null;
   }
 
-  public getData(): Array<Enaplo> {
+  public getData(): Array<Naplo> {
     return this.items;
   }
 }
 
-export class EnaplokParser extends BaseParser {
-  public parse(): Array<Enaplo> {
+export class NaploParser extends BaseParser {
+  public parse(): Array<Naplo> {
     this.skip( "$('#enaploAktaFa').html(" );
     const html = this.readString();
-    const collector = new EnaplokCollector();
+    const collector = new NaploCollector();
     this.parseHtml( html, collector );
     return collector.getData();
   }
