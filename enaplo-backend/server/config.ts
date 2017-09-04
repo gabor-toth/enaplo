@@ -4,7 +4,7 @@
 
 export class Config {
   private _targetUrlBase: string;
-  private _corsUrl: string;
+  private _corsUrl: any;
   private _listenOnPort: number;
   private _dev: boolean;
   private _hasSimulator: boolean;
@@ -25,7 +25,8 @@ export class Config {
   }
 
   private setCorsUrl( argv: any ): void {
-    this._corsUrl = 'http://localhost:4200';
+    //this._corsUrl = 'http://localhost:4200';
+    this._corsUrl = /^chrome-extension:\/\/.*/;
   }
 
   private setTargetUrlBase( argv: any ): void {
@@ -53,7 +54,7 @@ export class Config {
     return this._dev;
   }
 
-  get corsUrl(): string {
+  get corsUrl(): any {
     return this._corsUrl;
   }
 

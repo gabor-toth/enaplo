@@ -1,17 +1,21 @@
 {
 	"manifest_version": 2,
 	"name": "E-Napló",
-	"description": "E-Napló app as Chrome extension using angular4",
+	"description": "E-Napló w/ Angular4 Chrome extension",
 	"version": "1.0",
-	"icons": { 
-		"48": "icon.png"
+	"icons": {
+		"16": "icon16.png",
+		"48": "icon48.png",
+		"128": "icon128.png"
 	},
- 	"app": {
-    	"background": {
-    	"scripts": ["chromeapp.js"]
-    	}
-  	},
-  	"permissions": [
-    	"https://ajax.googleapis.com/"
-    ]
+	"app": {
+		"background": {
+			"scripts": [
+				"chromeapp.js"
+			]
+		}
+	},
+	"permissions": [
+		"https://ajax.googleapis.com/"
+	]
 }

@@ -5,7 +5,7 @@
     "baseUrl": "./",
     "module": "ES6",
     "types": [ ],
-    "target": "ES2017"
+    "target": "ES5"
   },
   "exclude": [
     "test.ts",

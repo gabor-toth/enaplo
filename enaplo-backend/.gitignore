@@ -1,7 +1,7 @@
 .vscode/
-build/
-.build/
-typings/
-node_modules/
+/build/
+/.build/
+/typings/
+/node_modules/
 .DS*
 ._.*

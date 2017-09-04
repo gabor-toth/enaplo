@@ -1,0 +1,7 @@
+/node_modules/
+/dist/
+
+/chrome-app/3rdpartylicenses.txt
+/chrome-app/index.html
+/chrome-app/manifest.json
+/chrome-app/*.bundle.*
