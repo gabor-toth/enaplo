@@ -1,0 +1,22 @@
+{
+  "name": "enaplo-ext",
+  "version": "0.1.0",
+  "description": "Enaplo Chrome extension",
+  "private": true,
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+  },
+  "main": "",
+  "author": "Gabor Toth",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
