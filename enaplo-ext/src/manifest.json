@@ -13,6 +13,8 @@
   	},
 	"permissions": [
 		"cookies", 
+		"https://e-epites.hu/",
+		"http://e-epites.hu/",
 		"https://enaplo.e-epites.hu/",
 		"http://enaplo.e-epites.hu/"
      ]
