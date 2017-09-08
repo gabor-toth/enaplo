@@ -10,17 +10,17 @@ import { EnaploComponent } from './enaplo/enaplo.component';
 import { EnaploService } from './enaplo/enaplo.service';
 
 @NgModule( {
-  declarations: [
-    AppComponent,
-    EnaploComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    AppRoutingModule
-  ],
-  providers: [ EnaploService ],
-  bootstrap: [ AppComponent ]
+	declarations: [
+		AppComponent,
+		EnaploComponent
+	],
+	imports: [
+		BrowserModule,
+		FormsModule,
+		HttpModule,
+		AppRoutingModule
+	],
+	providers: [ EnaploService ],
+	bootstrap: [ AppComponent ]
 } )
 export class AppModule { }

@@ -4,29 +4,29 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component( {
-  selector: 'app-enaplo',
-  templateUrl: './enaplo.component.html',
-  styleUrls: [ './enaplo.component.css' ]
+	selector: 'app-enaplo',
+	templateUrl: './enaplo.component.html',
+	styleUrls: [ './enaplo.component.css' ]
 } )
 export class EnaploComponent implements OnInit {
-  enaplok: Enaplo[];
+	enaplok: Enaplo[];
 
-  constructor( private enaploService: EnaploService,
-    private router: Router ) { }
+	constructor( private enaploService: EnaploService,
+		private router: Router ) { }
 
-  ngOnInit() {
-    this.getEnaplo();
-  }
+	ngOnInit() {
+		this.getEnaplo();
+	}
 
-  getEnaplo(): void {
-    this.enaploService
-      .getAll()
-      .then( enaplok => this.enaplok = enaplok );
-  }
+	getEnaplo(): void {
+		this.enaploService
+			.getAll()
+			.then( enaplok => this.enaplok = enaplok );
+	}
 
-  /*
-  gotoDetail(): void {
-    this.router.navigate(['/detail', this.selectedHero.id]);
-  }
-   */
+	/*
+	gotoDetail(): void {
+	  this.router.navigate(['/detail', this.selectedHero.id]);
+	}
+	 */
 }
