@@ -5,5 +5,5 @@ USER_PREFERENCE=overrideGlobalPreferencestruedisableAllValidationfalseversion1.2
 eclipse.preferences.version=1
 override=true
 suspend=false
-vals/com.genuitec.eclipse.javascript.tern.JavaScriptSyntaxValidator/groups=0107include09111contentType134org.eclipse.wst.jsdt.core.jsSourceT111contentType136org.eclipse.wst.html.core.htmlsourceT111contentType134org.eclipse.jst.jsp.core.jspsourceT111contentType130org.eclipse.php.core.phpsourceT07fileext02jsF07fileext04htmlF07fileext03htmF07fileext03jspF07fileext03phpF0107exclude0307pattern120^.*/node_modules/.*$T07pattern124^.*/bower_components/.*$T04file05buildF02
+vals/com.genuitec.eclipse.javascript.tern.JavaScriptSyntaxValidator/groups=0107include09111contentType134org.eclipse.wst.jsdt.core.jsSourceT111contentType136org.eclipse.wst.html.core.htmlsourceT111contentType134org.eclipse.jst.jsp.core.jspsourceT111contentType130org.eclipse.php.core.phpsourceT07fileext02jsF07fileext04htmlF07fileext03htmF07fileext03jspF07fileext03phpF0107exclude0407pattern120^.*/node_modules/.*$T07pattern124^.*/bower_components/.*$T04file05buildF0204file06.buildF02
 vf.version=3
