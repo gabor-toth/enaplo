@@ -1,21 +1,29 @@
 {
 	"manifest_version": 2,
 	"name": "E-Napló Ext",
-	"description": "E-Napló Chrome extension",
-	"version": "1.0",
+	"description": "E-Napló interceptor extension",
+	"version": "0.1.1",
 	"icons": {
-		"16": "icon16.png",
-		"48": "icon48.png",
-		"128": "icon128.png"
+		"16": "icons/icon16.png",
+		"48": "icons/icon48.png",
+		"128": "icons/icon128.png"
 	},
 	"background": {
-    	"scripts": ["background.js"]
-  	},
+		"scripts": [
+			"scripts/shared.js",
+			"scripts/cookies.js",
+			"scripts/webRequest.js",
+			"scripts/tabs.js"
+		]
+	},
 	"permissions": [
-		"cookies", 
+		"cookies",
+		"tabs",
+		"webRequest",
+		"webRequestBlocking",
 		"https://e-epites.hu/",
 		"http://e-epites.hu/",
 		"https://enaplo.e-epites.hu/",
 		"http://enaplo.e-epites.hu/"
-     ]
+	]
 }
