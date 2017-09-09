@@ -4,9 +4,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { NaploComponent } from './naplo/naplo.component';
 
 const routes: Routes = [
-	{ path: '', redirectTo: '/naplo', pathMatch: 'full' },
-	{ path: 'index.html', redirectTo: '/naplo', pathMatch: 'full' },
-	{ path: 'naplo', component: NaploComponent },
+	{ path: '', redirectTo: '/naplok', pathMatch: 'full' },
+	{ path: 'index.html', redirectTo: '/naplok', pathMatch: 'full' },
+	{ path: 'naplok', component: NaploComponent },
+	{ path: 'teendok', component: NaploComponent },
+	{ path: 'beallitasok', component: NaploComponent },
 	// { path: 'detail/:id', component: HeroDetailComponent },
 	// { path: 'heroes',     component: HeroesComponent }
 ];

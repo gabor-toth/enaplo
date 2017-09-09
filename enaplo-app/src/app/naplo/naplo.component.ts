@@ -1,5 +1,5 @@
 import { Naplo } from './naplo';
-import { NaploService } from './naplo.service';
+import { NaploService } from '../shared/service/naplo.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 

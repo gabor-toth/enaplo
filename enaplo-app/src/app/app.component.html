@@ -1,12 +1,27 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    {{title}}
-  </h1>
+<div style="text-align: center">
+	<h1>{{title}}</h1>
 </div>
 <div>
-    <nav>
+	<nav md-tab-nav-bar>
+		<a md-tab-link *ngFor="let tab of tabs" 
+			[routerLink]="[tab.route]"
+			routerLinkActive 
+			#rla="routerLinkActive"
+			[routerLinkActiveOptions]="{exact: true}"
+			 [active]="rla.isActive">
+			{{ tab.label }} 
+		</a>
+		<!-- 
+		<a md-tab-link *ngFor="let link of navLinks" [routerLink]="link"
+			routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">
+			{{tabLink.label}} </a>
     	<a routerLink="/naplo" routerLinkActive="active">E-Naplók</a>
-    </nav>
-    <router-outlet></router-outlet>
+		<a md-tab-link routerLink="naplok" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">E-Naplók</a>
+		<a md-tab-link routerLink="teendok" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">Teendők</a>
+		<a md-tab-link routerLink="beallitasok" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">Beállítások</a>
+    	 -->
+	</nav>
+
+	<router-outlet></router-outlet>
 </div>

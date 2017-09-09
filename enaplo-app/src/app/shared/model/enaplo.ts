@@ -35,6 +35,12 @@ export class Naplo {
 		this._type = ( this as any ).constructor.name;
 		this.szerepkorok = new Array<Szerepkor>();
 	}
+
+	public get originalString(): string {
+		// 2017/340/7 ház2: 1039 Budajenő HRSZ:1234 (Gabtoth72 - 235847809)
+		return this.azonosito + ' ' + this.nev + ': ' + this.iranyitoszam + ' ' + this.telepules +
+			' HRSZ: ' + this.helyrajziszam + ' (' + this.tulajdonos.nev + ' - ' + this.tulajdonos.nuj + ' )';
+	}
 }
 
 export class Fonaplo {

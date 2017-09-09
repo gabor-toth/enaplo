@@ -1,10 +1,11 @@
-import { BaseService } from '../common/base.service';
+import { BaseService } from './base.service';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Naplo } from './naplo';
+import { Naplo } from '../../naplo/naplo';
+import { NaploParser } from './naplo-parser';
 
 @Injectable()
 export class NaploService extends BaseService {
@@ -14,9 +15,9 @@ export class NaploService extends BaseService {
 	}
 
 	getAll(): Promise<Naplo[]> {
-		return this.httpGet( '/ajax?method=naplofa_load&id=%23page_enaplok' )
+		return this.httpGet( '?method=naplofa_load&id=%23page_enaplok' )
 			.toPromise()
-			.then( response => response.json().data as Naplo[] )
+			.then( response => new NaploParser().setData( response.text() ).parse() )
 			.catch( this.handleError );
 	}
 

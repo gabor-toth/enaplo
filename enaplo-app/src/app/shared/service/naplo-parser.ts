@@ -1,13 +1,13 @@
-import { BaseParser, Handler } from '../shared/base-parser';
-import { Naplo, Szemely } from '../shared/model/enaplo';
+import { BaseParser, Handler } from '../base-parser';
+import { Naplo, Szemely } from '../model/enaplo';
 
 class NaploCollector implements Handler {
-	private items: Array<Naplo>;
+	private items: Naplo[];
 	private inStrong: boolean;
 	private item: Naplo;
 
 	constructor() {
-		this.items = new Array<Naplo>();
+		this.items = [];
 	}
 
 	public onopentag( tagname: string, attributes: { [ type: string ]: string } ): void {
@@ -47,13 +47,13 @@ class NaploCollector implements Handler {
 		this.item = null;
 	}
 
-	public getData(): Array<Naplo> {
+	public getData(): Naplo[] {
 		return this.items;
 	}
 }
 
 export class NaploParser extends BaseParser {
-	public parse(): Array<Naplo> {
+	public parse(): Naplo[] {
 		this.skip( '$(\'#enaploAktaFa\').html(' );
 		const html = this.readString();
 		const collector = new NaploCollector();
