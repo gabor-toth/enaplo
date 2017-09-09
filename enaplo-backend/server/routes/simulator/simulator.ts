@@ -1,50 +1,47 @@
 import { Request, Response, Router, NextFunction } from 'express';
 import { BaseRouter } from '../base-router';
+import * as root from 'app-root-path';
+import * as path from 'path';
 
 export class RouterSimulator extends BaseRouter {
-  register( router: Router ) {
-    router.get( '/enaplo_demo/ajax', ( request: Request, response: Response, next: NextFunction ) => {
-      const htmlid = request.query.htmlid;
-      const method = request.query.method;
-      if ( !this.checkHtmlId( response, htmlid ) ) {
-        return;
-      }
-      response.setHeader( 'Content-type', 'test/html; charset=utf-8' );
-      switch ( method ) {
-        case 'naplofa_load':
-          response.send( '$(\'#enaploAktaFa\').html(\'<ul class=\\\'fa_naplo keret\\\'><li class=\\\'r0 sajatakta\\\'><div class=\\\'naploelem\\\' title=\\\'Az E-napló adatainak megmutatása\\\' style=\\\'padding-left:6px;\\\' tipus=0 azon=\\\'23167\\\'><i class=\\\'icon-null\\\'></i> <i class=\\\'icon-book\\\' title=\\\'e-napló\\\'></i> <strong>2017/2708/1 ház2: 1111 Cakóháza HRSZ:123-121/123 (Gabtoth73 - 130840570)</strong> <i class=\\\'icon-user\\\' title=\\\'Szerep\\\'></i> <i class=\\\'icon-home\\\' title=\\\'Saját e-napló\\\'></i></div><li class=\\\'r1 sajatakta\\\'><div class=\\\'naploelem\\\' title=\\\'Az E-napló adatainak megmutatása\\\' style=\\\'padding-left:6px;\\\' tipus=0 azon=\\\'23166\\\'><i class=\\\'icon-null\\\'></i> <i class=\\\'icon-book\\\' title=\\\'e-napló\\\'></i> <strong>2017/1244/1 ház1 (tesztszöveg:): 1031 Abádszalók HRSZ:1234:() (Gabtoth73 - 130840570)</strong> <i class=\\\'icon-user\\\' title=\\\'Szerep\\\'></i> <i class=\\\'icon-home\\\' title=\\\'Saját e-napló\\\'></i></div></ul>\');aktaTreeInit(\'#enaploAktaFa\');' );
-          break;
-        case 'get_naplo_items':
-          this.getNaploItems( request, response, );
-          break;
-        case 'vallalkozoinaplokkarton_load':
-        default:
-          this.badRequest( response, 'Unknown method ' + method );
-          break;
-      }
-    } );
-  }
+	private responseRoot: string = path.join( root.path, 'server/routes/simulator/responses' );
 
-  getNaploItems( request: Request, response: Response ) {
-    const aktaid = request.query.aktaid;
-    if ( !this.checkParameter( response, 'aktaid', aktaid ) ) {
-      return;
-    }
-    switch ( aktaid ) {
-      case '23166':
-        response.send( 'insertNaploItems(\'enaploAktaFa\',\'23167\',\'<ul class=\\\'fa_naplo\\\'><li class=\\\'r0\\\'><div class=\\\'naploelem sajat\\\' style=\\\'padding-left:38px;\\\' tipus=1 azon=\\\'23167|20998\\\' title=\\\'Az E-főnapló adatainak megmutatása\\\'><i class=\\\'icon-null\\\'></i> <i class=\\\'icon-list\\\' title=\\\'E-főnapló\\\'></i> 2017/2708/1-1 alapásás (ja) (Építtető, Kivitelező - napijelentésért felelős, Tervezői művezető (Nem értelmezett)) <i class=\\\'icon-user\\\' title=\\\'Szerep\\\'></i></div></li><li class=\\\'r1\\\'><div class=\\\'naploelem sajat\\\' style=\\\'padding-left:38px;\\\' tipus=1 azon=\\\'23167|20999\\\' title=\\\'Az E-főnapló adatainak megmutatása\\\'><i class=\\\'icon-null\\\'></i> <i class=\\\'icon-list\\\' title=\\\'E-főnapló\\\'></i> 2017/2708/1-2 alapozás (Építtető, Építtető, Kivitelező - napijelentésért felelős, Építési műszaki ellenőr (Építészet), Felelős műszaki vezető (Épületvillamos), Biztonsági és egészségvédelmi koordinátor) <i class=\\\'icon-user\\\' title=\\\'Szerep\\\'></i></div></li></ul>\');' )
-        break;
-      // 23167
-      default:
-        this.noSuchElement( response, 'No Naplo with id ' + aktaid );
-        break;
-    }
-  }
+	register( router: Router ) {
+		router.get( '/enaplo_demo/ajax', ( request: Request, response: Response, next: NextFunction ) => {
+			const htmlid = request.query.htmlid;
+			const method = request.query.method;
+			if ( !this.checkHtmlId( response, htmlid ) ) {
+				return;
+			}
+			response.setHeader( 'Content-type', 'test/html; charset=utf-8' );
+			switch ( method ) {
+				case 'naplofa_load':
+					response.sendFile( 'naplofa_load', { 'root': this.responseRoot } );
+					break;
+				case 'get_naplo_items':
+					this.sendItemWithId( request, response, method, 'aktaid' );
+					break;
+				case 'vallalkozoinaplokkarton_load':
+				default:
+					this.badRequest( response, 'Unknown method ' + method );
+					break;
+			}
+		} );
+	}
 
-  checkHtmlId( response: Response, htmlid: string ): boolean {
-    if ( htmlid != 'f8daeec805c629b087a93d340721ef00' ) {
-      response.sendStatus( 403 ); // forbidden
-    }
-    return true;
-  }
+	sendItemWithId( request: Request, response: Response, baseFileName: string, idParameter: string ) {
+		const id = request.query[ idParameter ];
+		if ( !this.checkParameter( response, idParameter, id ) ) {
+			return;
+		}
+		response.sendFile( baseFileName + '_' + id, { 'root': this.responseRoot } );
+	}
+
+	checkHtmlId( response: Response, htmlid: string ): boolean {
+		if ( htmlid != '_htmlid_' ) {
+			response.sendStatus( 403 ); // forbidden
+			return false;
+		}
+		return true;
+	}
 }
