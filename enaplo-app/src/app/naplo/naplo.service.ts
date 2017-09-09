@@ -1,30 +1,31 @@
+import { BaseService } from '../common/base.service';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Enaplo } from './enaplo';
+import { Naplo } from './naplo';
 
 @Injectable()
-export class EnaploService {
+export class NaploService extends BaseService {
 
-	private headers = new Headers( { 'Content-Type': 'application/json' } );
-	private apiUrl = 'http://localhost:3000/api/enaplok';  // URL to web api
+	constructor() {
+		super();
+	}
 
-	constructor( private http: Http ) { }
-
-	getAll(): Promise<Enaplo[]> {
-		return this.http.get( this.apiUrl )
+	getAll(): Promise<Naplo[]> {
+		return this.httpGet( '/ajax?method=naplofa_load&id=%23page_enaplok' )
 			.toPromise()
-			.then( response => response.json().data as Enaplo[] )
+			.then( response => response.json().data as Naplo[] )
 			.catch( this.handleError );
 	}
 
-	get( id: number ): Promise<Enaplo> {
+	/*
+	get( id: number ): Promise<Naplo> {
 		const url = `${ this.apiUrl }/${ id }`;
 		return this.http.get( url )
 			.toPromise()
-			.then( response => response.json().data as Enaplo )
+			.then( response => response.json().data as Naplo )
 			.catch( this.handleError );
 	}
 
@@ -36,15 +37,15 @@ export class EnaploService {
 			.catch( this.handleError );
 	}
 
-	create( name: string ): Promise<Enaplo> {
+	create( name: string ): Promise<Naplo> {
 		return this.http
 			.post( this.apiUrl, JSON.stringify( { name: name } ), { headers: this.headers } )
 			.toPromise()
-			.then( res => res.json().data as Enaplo )
+			.then( res => res.json().data as Naplo )
 			.catch( this.handleError );
 	}
 
-	update( entity: Enaplo ): Promise<Enaplo> {
+	update( entity: Naplo ): Promise<Naplo> {
 		const url = `${ this.apiUrl }/${ entity.id }`;
 		return this.http
 			.put( url, JSON.stringify( entity ), { headers: this.headers } )
@@ -52,6 +53,7 @@ export class EnaploService {
 			.then(() => entity )
 			.catch( this.handleError );
 	}
+	*/
 
 	private handleError( error: any ): Promise<any> {
 		console.error( 'An error occurred', error ); // for demo purposes only

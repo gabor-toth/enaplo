@@ -1,4 +1,4 @@
-export class Enaplo {
+export class Naplo {
 	id: number;
 	name: string;
 }

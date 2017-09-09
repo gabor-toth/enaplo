@@ -6,13 +6,13 @@ import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { EnaploComponent } from './enaplo/enaplo.component';
-import { EnaploService } from './enaplo/enaplo.service';
+import { NaploComponent } from './naplo/naplo.component';
+import { NaploService } from './naplo/naplo.service';
 
 @NgModule( {
 	declarations: [
 		AppComponent,
-		EnaploComponent
+		NaploComponent
 	],
 	imports: [
 		BrowserModule,
@@ -20,7 +20,7 @@ import { EnaploService } from './enaplo/enaplo.service';
 		HttpModule,
 		AppRoutingModule
 	],
-	providers: [ EnaploService ],
+	providers: [ NaploService ],
 	bootstrap: [ AppComponent ]
 } )
 export class AppModule { }

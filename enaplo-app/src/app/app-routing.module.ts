@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { EnaploComponent } from './enaplo/enaplo.component';
+import { NaploComponent } from './naplo/naplo.component';
 
 const routes: Routes = [
-	{ path: '', redirectTo: '/enaplo', pathMatch: 'full' },
-	{ path: 'index.html', redirectTo: '/enaplo', pathMatch: 'full' },
-	{ path: 'enaplo', component: EnaploComponent },
+	{ path: '', redirectTo: '/naplo', pathMatch: 'full' },
+	{ path: 'index.html', redirectTo: '/naplo', pathMatch: 'full' },
+	{ path: 'naplo', component: NaploComponent },
 	// { path: 'detail/:id', component: HeroDetailComponent },
 	// { path: 'heroes',     component: HeroesComponent }
 ];

@@ -16,6 +16,7 @@
 		}
 	},
 	"permissions": [
+		"https://enaplo.e-epites.hu/",
 		"https://ajax.googleapis.com/"
      ]
 }

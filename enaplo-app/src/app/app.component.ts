@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { ServiceLocator } from './common/service-locator';
+import { Component, Injector } from '@angular/core';
 
 @Component( {
 	selector: 'app-root',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 } )
 export class AppComponent {
 	title = 'E-Napló';
+
+	constructor(
+		private injector: Injector
+	) {
+		ServiceLocator.injector = this.injector;
+	}
 }
