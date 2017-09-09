@@ -1,6 +1,6 @@
 eclipse.preferences.version=1
-editor.indentSize=2
-editor_save_participant_enabled=false
+editor.indentSize=4
+editor_save_participant_enabled=true
 editor_save_participant_project_enabled=true
 formatter.insertSpaceAfterCommaDelimiter=true
 formatter.insertSpaceAfterFunctionKeywordForAnonymousFunctions=false
@@ -13,5 +13,5 @@ formatter.insertSpaceAfterSemicolonInForStatements=true
 formatter.insertSpaceBeforeAndAfterBinaryOperators=true
 formatter.placeOpenBraceOnNewLineForControlBlocks=false
 formatter.placeOpenBraceOnNewLineForFunctions=false
-spacesForTabs=true
-tabWidth=2
+spacesForTabs=false
+tabWidth=4
