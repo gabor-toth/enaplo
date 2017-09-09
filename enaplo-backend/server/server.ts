@@ -16,10 +16,10 @@ app.set( 'view engine', 'ejs' );
 
 // modules
 app.use( logger( config.dev ? 'dev' : 'combined' ) );
-app.use( bodyParser.text( "text" ) );
-//app.use( bodyParser.json() );
+app.use( bodyParser.text( 'text' ) );
+// app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded( {
-  extended: false
+	extended: false
 } ) );
 app.use( cookieParser() );
 
@@ -32,27 +32,27 @@ app.use( '/', routes );
 
 // catch 404 and forward to error handler
 app.use(( request: express.Request, response: express.Response, next: express.NextFunction ) => {
-  const error: any = new Error( 'Not Found' );
-  error.status = 404;
-  next( error );
+	const error: any = new Error( 'Not Found' );
+	error.status = 404;
+	next( error );
 } );
 
 function mapExceptionToStatusCode( error: any ) {
-  const exceptionClass = error.constructor.name;
-  if ( "SyntaxError" == exceptionClass ) {
-    error.status = 400;
-  }
+	const exceptionClass = error.constructor.name;
+	if ( 'SyntaxError' == exceptionClass ) {
+		error.status = 400;
+	}
 }
 app.use( function( error: any, request: express.Request, response: express.Response, next: Function ) {
-  console.error( error );
-  mapExceptionToStatusCode( error );
-  var status = error.status || 500;
-  response.status( status );
-  response.render( 'error', {
-    message: error.message,
-    // development error handler will print stacktrace for internal server errors
-    error: config.dev && status == 500 ? error : {}
-  } );
+	console.error( error );
+	mapExceptionToStatusCode( error );
+	const status = error.status || 500;
+	response.status( status );
+	response.render( 'error', {
+		message: error.message,
+		// development error handler will print stacktrace for internal server errors
+		error: config.dev && status == 500 ? error : {}
+	} );
 } );
 
 export default app;

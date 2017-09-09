@@ -6,14 +6,14 @@ import config from './config';
 
 let currentApp = app;
 
-const server = http.createServer( app );
-server.listen( config.listenOnPort );
+const server = http.createServer(app);
+server.listen(config.listenOnPort);
 
-// when moved to TypeScript source, this part does not work anmymore
+// when changing source to TypeScript, this part does not work anmymore
 if ( module.hot ) {
-  module.hot.accept( './server', () => {
-    server.removeListener( 'request', currentApp );
-    server.on( 'request', app );
-    currentApp = app;
-  } );
+	module.hot.accept('./server', () => {
+		server.removeListener('request', currentApp);
+		server.on('request', app);
+		currentApp = app;
+	});
 }

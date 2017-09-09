@@ -8,7 +8,7 @@ new RouterRoot().register( router );
 new RouterEnaplo().register( router );
 
 if ( config.hasSimulator ) {
-  new RouterSimulator().register( router );
+	new RouterSimulator().register( router );
 }
 
 export = router;
