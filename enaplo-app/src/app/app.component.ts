@@ -1,4 +1,4 @@
-import { ServiceLocator } from './common/service-locator';
+import { ServiceLocator } from './common/service/service-locator';
 import { Component, Injector } from '@angular/core';
 
 class Tab {

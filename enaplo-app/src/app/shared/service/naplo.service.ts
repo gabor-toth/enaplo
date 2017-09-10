@@ -1,14 +1,14 @@
-import { BaseService } from './base.service';
+import { Naplo } from '../model/naplo-model';
+import { EnaploBaseService } from './enaplo-base.service';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Naplo } from '../../naplo/naplo';
 import { NaploParser } from './naplo-parser';
 
 @Injectable()
-export class NaploService extends BaseService {
+export class NaploService extends EnaploBaseService {
 
 	constructor() {
 		super();
@@ -55,9 +55,4 @@ export class NaploService extends BaseService {
 			.catch( this.handleError );
 	}
 	*/
-
-	private handleError( error: any ): Promise<any> {
-		console.error( 'An error occurred', error ); // for demo purposes only
-		return Promise.reject( error.message || error );
-	}
 }

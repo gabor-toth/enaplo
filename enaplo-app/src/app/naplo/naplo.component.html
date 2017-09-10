@@ -1,4 +1,13 @@
 <div>
+	<div class="spinner-holder">
+		 <md-progress-spinner
+	        class="example-margin"
+	        color="primary"
+	        mode="indeterminate"
+	        *ngIf="loading" 
+	        >
+	    </md-progress-spinner>
+    </div>
 	<md-list>
  		<md-list-item *ngFor="let naplo of naplok">
 			<span>{{naplo.originalString}}</span>

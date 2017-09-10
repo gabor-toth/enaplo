@@ -1,16 +1,15 @@
 import { environment } from '../../../environments/environment';
-import { ServiceLocator } from '../../common/service-locator';
+import { BaseService } from '../../common/service/base.service';
+import { BaseParser } from '../base-parser';
 import { Http, Headers, Response } from '@angular/http';
-import { Injectable, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-export abstract class BaseService {
+export abstract class EnaploBaseService extends BaseService {
 	protected getHeaders: Headers = new Headers( {} );
 	protected apiUrl = 'https://enaplo.e-epites.hu/enaplo_demo';  // URL to web api
-	protected http: Http;
 
 	constructor() {
-		this.http = ServiceLocator.injector.get( Http );
+		super();
 		this.apiUrl = environment.enaploServiceUrl;
 	}
 
