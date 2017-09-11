@@ -1,5 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
+body {
+	font-family: Roboto, "Helvetica Neue", sans-serif;
+	font-size: 14px;	
+}
+
 /*@import "~@angular/material/prebuilt-themes/indigo-pink.css";*/
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 
@@ -10,4 +15,17 @@
 
 .spinner-holder .mat-progress-spinner {
     display: inline-block;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
 }

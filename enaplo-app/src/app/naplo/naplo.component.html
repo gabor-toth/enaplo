@@ -8,6 +8,10 @@
 	        >
 	    </md-progress-spinner>
     </div>
+	<div *ngIf="loadError != null" class="alert alert-danger">
+		 <span>{{loadError}}</span>
+		 <button md-raised-button>Újra</button>
+    </div>
 	<md-list>
  		<md-list-item *ngFor="let naplo of naplok">
 			<span>{{naplo.originalString}}</span>

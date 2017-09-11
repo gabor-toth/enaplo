@@ -1,3 +1,4 @@
+import { ServiceCallStateCallback } from '../../common/service/service-call-state-callback';
 import { Naplo } from '../model/naplo-model';
 import { EnaploBaseService } from './enaplo-base.service';
 import { Injectable } from '@angular/core';
@@ -14,11 +15,12 @@ export class NaploService extends EnaploBaseService {
 		super();
 	}
 
-	getAll(): Promise<Naplo[]> {
-		return this.httpGet( '?method=naplofa_load&id=%23page_enaplok' )
+	getAll( stateCallback: ServiceCallStateCallback ): Promise<Naplo[]> {
+		stateCallback.onServiceCallStart();
+		return this.httpGet( '?method=naplofa_load&id=%23page_enaplok', stateCallback )
 			.toPromise()
-			.then( response => new NaploParser().setData( response.text() ).parse() )
-			.catch( this.handleError );
+			.then( response => { stateCallback.onServiceCallEnd(); return new NaploParser().setData( response.text() ).parse(); } )
+			.catch( error => this.handleError( error, stateCallback ) );
 	}
 
 	/*

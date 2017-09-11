@@ -23,15 +23,16 @@ export class NaploComponent extends BaseComponent implements OnInit {
 
 	getEnaplo(): void {
 		this.enaploService
-			.getAll()
+			.getAll( this )
 			.then( naplok => this.onEnaploLoaded( naplok ) )
 			.catch( error => this.onServiceError( error ) );
 	}
 
 	onEnaploLoaded( naplok: Naplo[] ): void {
-		super.onServiceSuccess();
 		this.naplok = naplok;
 	}
+
+
 
 	/*
 	gotoDetail(): void {
