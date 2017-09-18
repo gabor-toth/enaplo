@@ -1,20 +1,51 @@
 <div>
+	<div class="progress-bar-holder">
+		<md-progress-bar mode="indeterminate" *ngIf="loading"></md-progress-bar>
+	</div>
+	<!-- 
 	<div class="spinner-holder">
-		 <md-progress-spinner
-	        class="example-margin"
-	        color="primary"
-	        mode="indeterminate"
-	        *ngIf="loading" 
-	        >
-	    </md-progress-spinner>
+		<md-progress-spinner mode="indeterminate" *ngIf="loading" ></md-progress-spinner>
     </div>
-	<div *ngIf="loadError != null" class="alert alert-danger">
-		 <span>{{loadError}}</span>
-		 <button md-raised-button>Újra</button>
+	-->
+    <div>
+		<button type="button" (click)="refreshNaplok(true)" md-raised-button class="align-top">Frissítés</button>
+		<div *ngIf="loadError != null" class="inline-block alert alert-danger">
+			 <span>{{loadError}}</span>
+			 <button type="button" (click)="refreshNaplok(true)" md-raised-button>Újra</button>
+	    </div>
     </div>
-	<md-list>
- 		<md-list-item *ngFor="let naplo of naplok">
-			<span>{{naplo.originalString}}</span>
- 		</md-list-item>
- 	</md-list>
+    <md-table #table [dataSource]="naplok">
+		<ng-container mdColumnDef="azonosito">
+			<md-header-cell *mdHeaderCellDef> Azonosító </md-header-cell>
+			<md-cell *mdCellDef="let element"> {{element.azonosito}} </md-cell>
+    	</ng-container>
+    	    	
+		<ng-container mdColumnDef="nev">
+			<md-header-cell *mdHeaderCellDef> Név </md-header-cell>
+			<md-cell *mdCellDef="let element"> {{element.nev}} </md-cell>
+    	</ng-container>
+    	    	
+		<ng-container mdColumnDef="telepules">
+			<md-header-cell *mdHeaderCellDef> Települes </md-header-cell>
+			<md-cell *mdCellDef="let element"> {{element.telepules}} </md-cell>
+    	</ng-container>
+
+		<ng-container mdColumnDef="iranyitoszam">
+			<md-header-cell *mdHeaderCellDef> Irányítószám </md-header-cell>
+			<md-cell *mdCellDef="let element"> {{element.iranyitoszam}}</md-cell>
+    	</ng-container>
+    	    	
+		<ng-container mdColumnDef="helyrajziszam">
+			<md-header-cell *mdHeaderCellDef> Hrsz </md-header-cell>
+			<md-cell *mdCellDef="let element"> {{element.helyrajziszam}} </md-cell>
+    	</ng-container>
+    	    	
+		<ng-container mdColumnDef="tulajdonos">
+			<md-header-cell *mdHeaderCellDef> Tulajdonos </md-header-cell>
+			<md-cell *mdCellDef="let element"> {{element.tulajdonos.nev}} </md-cell>
+    	</ng-container>
+    	
+    	<md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
+    	<md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
+    </md-table>
 </div>

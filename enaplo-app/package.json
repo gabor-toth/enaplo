@@ -5,6 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start-public": "ng serve --host 192.168.1.130",
     "start-prod": "ng serve --target=production",
     "build": "ng build",
     "app": "ng build --target=production && cp chrome-app/* dist",

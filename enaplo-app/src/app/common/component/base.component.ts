@@ -1,9 +1,9 @@
 import { BaseService } from '../service/base.service';
 import { Component, OnInit } from '@angular/core';
 
-import { ServiceCallStateCallback } from '../service/service-call-state-callback';
+import { ServiceCallStateObserver } from '../service/service-call-state-callback';
 
-export class BaseComponent implements ServiceCallStateCallback {
+export class BaseComponent implements ServiceCallStateObserver {
 	loading = false;
 	loadTimer: any;
 	loadError: string;

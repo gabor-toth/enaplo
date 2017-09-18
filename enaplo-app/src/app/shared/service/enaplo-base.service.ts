@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
 import { BaseParser } from '../base-parser';
 import { BaseService } from '../../common/service/base.service';
-import { ServiceCallStateCallback } from '../../common/service/service-call-state-callback';
+import { ServiceCallStateObserver } from '../../common/service/service-call-state-callback';
 
 export abstract class EnaploBaseService extends BaseService {
 	protected getHeaders: Headers = new Headers( {} );
@@ -15,7 +15,7 @@ export abstract class EnaploBaseService extends BaseService {
 		this.apiUrl = environment.enaploServiceUrl;
 	}
 
-	protected httpGet( urlPart: string, stateCallback: ServiceCallStateCallback ): Observable<Response> {
+	protected httpGet( urlPart: string, stateCallback: ServiceCallStateObserver ): Observable<Response> {
 		const time = Date.now();
 		return this.http
 			.get( `${ this.apiUrl }${ urlPart }&htmlid=_htmlid_&_=${ time }`, this.getHeaders );

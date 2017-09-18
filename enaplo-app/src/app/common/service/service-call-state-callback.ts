@@ -1,5 +1,5 @@
 
-export interface ServiceCallStateCallback {
+export interface ServiceCallStateObserver {
 	onServiceCallStart(): void;
 	onServiceCallEnd(): void;
 }

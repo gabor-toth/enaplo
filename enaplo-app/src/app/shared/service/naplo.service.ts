@@ -1,8 +1,8 @@
-import { ServiceCallStateCallback } from '../../common/service/service-call-state-callback';
+import { ServiceCallStateObserver } from '../../common/service/service-call-state-callback';
 import { Naplo } from '../model/naplo-model';
 import { EnaploBaseService } from './enaplo-base.service';
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Headers, Http, Response } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -10,17 +10,28 @@ import { NaploParser } from './naplo-parser';
 
 @Injectable()
 export class NaploService extends EnaploBaseService {
+	cachedNaplo: Naplo[];
 
 	constructor() {
 		super();
 	}
 
-	getAll( stateCallback: ServiceCallStateCallback ): Promise<Naplo[]> {
-		stateCallback.onServiceCallStart();
-		return this.httpGet( '?method=naplofa_load&id=%23page_enaplok', stateCallback )
+	getAll( reload: boolean, stateObserver: ServiceCallStateObserver ): Promise<Naplo[]> {
+		if ( !reload && this.cachedNaplo != null ) {
+			return new Promise(( resolve, reject ) => resolve( this.cachedNaplo ) );
+		}
+		this.cachedNaplo = null;
+		stateObserver.onServiceCallStart();
+		return this.httpGet( '?method=naplofa_load&id=%23page_enaplok', stateObserver )
 			.toPromise()
-			.then( response => { stateCallback.onServiceCallEnd(); return new NaploParser().setData( response.text() ).parse(); } )
-			.catch( error => this.handleError( error, stateCallback ) );
+			.then( response => this.receivedResponse( response, stateObserver ) )
+			.catch( error => this.handleError( error, stateObserver ) );
+	}
+
+	private receivedResponse( response: Response, stateObserver: ServiceCallStateObserver ): Naplo[] {
+		stateObserver.onServiceCallEnd();
+		this.cachedNaplo = new NaploParser().setData( response.text() ).parse();
+		return this.cachedNaplo;
 	}
 
 	/*

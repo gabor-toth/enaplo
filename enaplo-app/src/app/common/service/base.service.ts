@@ -1,4 +1,4 @@
-import { ServiceCallStateCallback } from './service-call-state-callback';
+import { ServiceCallStateObserver } from './service-call-state-callback';
 import { ServiceLocator } from './service-locator';
 import { Http } from '@angular/http';
 
@@ -14,7 +14,7 @@ export abstract class BaseService {
 		this.http = ServiceLocator.injector.get( Http );
 	}
 
-	protected handleError( error: any, stateCallback: ServiceCallStateCallback ): Promise<any> {
+	protected handleError( error: any, stateCallback: ServiceCallStateObserver ): Promise<any> {
 		stateCallback.onServiceCallEnd();
 		let errorCode = 0;
 		if ( error.type == 2 ) {

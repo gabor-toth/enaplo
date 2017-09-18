@@ -4,32 +4,36 @@ import { NaploService } from '../shared/service/naplo.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { ArrayDataSource } from '../common/helper';
+
 @Component( {
 	selector: 'app-enaplo',
 	templateUrl: './naplo.component.html',
 	styleUrls: [ './naplo.component.css' ]
 } )
 export class NaploComponent extends BaseComponent implements OnInit {
-	naplok: Naplo[];
+	naplok: ArrayDataSource<Naplo>;
+	displayedColumns = [ 'azonosito', 'nev', 'iranyitoszam', 'telepules', 'helyrajziszam', 'tulajdonos' ];
 
 	constructor( private enaploService: NaploService,
 		private router: Router ) {
 		super();
+
 	}
 
 	ngOnInit() {
-		this.getEnaplo();
+		this.refreshNaplok( false );
 	}
 
-	getEnaplo(): void {
+	refreshNaplok( forceReload: any ): void {
 		this.enaploService
-			.getAll( this )
+			.getAll( forceReload, this )
 			.then( naplok => this.onEnaploLoaded( naplok ) )
 			.catch( error => this.onServiceError( error ) );
 	}
 
 	onEnaploLoaded( naplok: Naplo[] ): void {
-		this.naplok = naplok;
+		this.naplok = new ArrayDataSource( naplok );
 	}
 
 

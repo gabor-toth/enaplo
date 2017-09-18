@@ -119,7 +119,6 @@
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
     "use-life-cycle-interface": true,
-    "use-pipe-transform-interface": true,
-    "templates-use-public": true
+    "use-pipe-transform-interface": true
   }
 }
