@@ -31,6 +31,8 @@ export class Naplo {
 	public tulajdonos: Szemely;
 	public szerepkorok: Array<Szerepkor>;
 
+	public fonaplok: Array<Fonaplo>;
+
 	constructor() {
 		this._type = ( this as any ).constructor.name;
 		this.szerepkorok = new Array<Szerepkor>();

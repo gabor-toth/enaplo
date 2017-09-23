@@ -1,5 +1,5 @@
-import { BaseParser, Handler } from '../base-parser';
-import { Naplo, Szemely } from '../model/naplo-model';
+import { BaseParser, Handler } from '../../base-parser';
+import { Naplo, Szemely } from '../../model/naplo-model';
 
 class NaploCollector implements Handler {
 	private items: Naplo[];

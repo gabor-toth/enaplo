@@ -1,26 +1,61 @@
 import { ServiceCallStateObserver } from '../../common/service/service-call-state-callback';
-import { Naplo } from '../model/naplo-model';
-import { EnaploBaseService } from './enaplo-base.service';
 import { Injectable } from '@angular/core';
 import { Headers, Http, Response } from '@angular/http';
 
+import { Naplo } from '../model/naplo-model';
+import { EnaploBaseService } from './enaplo-base.service';
+import { FonaploParser } from './parsers/fonaplo-parser';
+
 import 'rxjs/add/operator/toPromise';
 
-import { NaploParser } from './naplo-parser';
+import { NaploParser } from './parsers/naplo-parser';
+
+class FonaploFetcher {
+	service: NaploService;
+	stateObserver: ServiceCallStateObserver;
+	naplok: Naplo[];
+	position: number;
+
+	constructor( service: NaploService, stateObserver: ServiceCallStateObserver, naplok: Naplo[] ) {
+		this.service = service;
+		this.stateObserver = stateObserver;
+		this.naplok = naplok;
+		this.position = 0;
+	}
+
+	fetchNext(): any {
+		if ( this.position == this.naplok.length ) {
+			this.stateObserver.onServiceCallEnd();
+			this.service.cachedNaplok = this.naplok;
+			return this.naplok;
+		}
+		this.stateObserver.onServiceCallProgress( 100 * ( this.position + 1 ) / ( this.naplok.length + 1 ) );
+		const naploSorszam = this.naplok[ this.position ].sorszam;
+		return this.service.getFonaplok( naploSorszam ).then( response => this.receivedResponse( response ) );
+	}
+
+	private receivedResponse( response: Response ): any {
+		const fonaplok = new FonaploParser().setData( response.text() ).parse();
+		this.naplok[ this.position ].fonaplok = fonaplok;
+		this.position++;
+		return this.fetchNext();
+	}
+
+}
 
 @Injectable()
 export class NaploService extends EnaploBaseService {
-	cachedNaplo: Naplo[];
+	cachedNaplok: Naplo[];
 
 	constructor() {
 		super();
 	}
 
-	getAll( reload: boolean, stateObserver: ServiceCallStateObserver ): Promise<Naplo[]> {
-		if ( !reload && this.cachedNaplo != null ) {
-			return new Promise(( resolve, reject ) => resolve( this.cachedNaplo ) );
+	getNaplok( reload: boolean, stateObserver: ServiceCallStateObserver ): Promise<Naplo[]> {
+		if ( !reload && this.cachedNaplok != null ) {
+			return new Promise(( resolve, reject ) => resolve( this.cachedNaplok ) );
 		}
-		this.cachedNaplo = null;
+		this.cachedNaplok = null;
 		stateObserver.onServiceCallStart();
 		return this.httpGet( '?method=naplofa_load&id=%23page_enaplok', stateObserver )
 			.toPromise()
@@ -28,10 +63,13 @@ export class NaploService extends EnaploBaseService {
 			.catch( error => this.handleError( error, stateObserver ) );
 	}
 
-	private receivedResponse( response: Response, stateObserver: ServiceCallStateObserver ): Naplo[] {
-		stateObserver.onServiceCallEnd();
-		this.cachedNaplo = new NaploParser().setData( response.text() ).parse();
-		return this.cachedNaplo;
+	private receivedResponse( response: Response, stateObserver: ServiceCallStateObserver ): any {
+		const naplok = new NaploParser().setData( response.text() ).parse();
+		return new FonaploFetcher( this, stateObserver, naplok ).fetchNext();
+	}
+
+	getFonaplok( naploId: string ): Promise<Response> {
+		return this.httpGet( '?method=get_naplo_items&parentid=enaploAktaFa&aktaid=' + naploId, null ).toPromise();
 	}
 
 	/*

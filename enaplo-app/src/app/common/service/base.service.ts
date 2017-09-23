@@ -27,7 +27,11 @@ export abstract class BaseService {
 			errorCode = BaseService.ERROR_CONNECTION_REFUSED;
 		}
 		if ( errorCode == 0 ) {
-			console.error( 'Unhandled error: ', error );
+			if ( error instanceof Response ) {
+				console.error( 'Unhandled error: status ' + error.status + ' ' + error.statusText, error );
+			} else {
+				console.error( 'Unhandled error', error );
+			}
 			errorCode = BaseService.ERROR_UNKNOWN;
 		}
 		return Promise.reject( errorCode );

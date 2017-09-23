@@ -33,6 +33,14 @@ export abstract class BaseParser {
 		this.position += exptectedString.length;
 	}
 
+	protected skipUntil( exptectedString: string ): void {
+		const skipToPosition = this.data.indexOf( exptectedString, this.position );
+		if ( skipToPosition < 0 ) {
+			throw new SyntaxError( 'Expected string not found' );
+		}
+		this.position = skipToPosition + exptectedString.length;
+	}
+
 	protected readString(): string {
 		this.checkLength( 1 );
 		if ( this.data.charAt( this.position ) != '\'' ) {

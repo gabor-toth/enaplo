@@ -1,6 +1,6 @@
 <div>
 	<div class="progress-bar-holder">
-		<md-progress-bar mode="indeterminate" *ngIf="loading"></md-progress-bar>
+		<md-progress-bar [mode]="progressType" [value]="progressValue" *ngIf="loading"></md-progress-bar>
 	</div>
 	<!-- 
 	<div class="spinner-holder">

@@ -13,7 +13,9 @@ import { ArrayDataSource } from '../common/helper';
 } )
 export class NaploComponent extends BaseComponent implements OnInit {
 	naplok: ArrayDataSource<Naplo>;
-	displayedColumns = [ 'azonosito', 'nev', 'iranyitoszam', 'telepules', 'helyrajziszam', 'tulajdonos' ];
+	displayedColumns = [ 'azonosito', 'nev', 'iranyitoszam', 'telepules'
+		// , 'helyrajziszam', 'tulajdonos'
+	];
 
 	constructor( private enaploService: NaploService,
 		private router: Router ) {
@@ -27,7 +29,7 @@ export class NaploComponent extends BaseComponent implements OnInit {
 
 	refreshNaplok( forceReload: any ): void {
 		this.enaploService
-			.getAll( forceReload, this )
+			.getNaplok( forceReload, this )
 			.then( naplok => this.onEnaploLoaded( naplok ) )
 			.catch( error => this.onServiceError( error ) );
 	}

@@ -5,12 +5,21 @@ import { ServiceCallStateObserver } from '../service/service-call-state-callback
 
 export class BaseComponent implements ServiceCallStateObserver {
 	loading = false;
+	progressType = 'indeterminate';
+	progressValue = 0;
 	loadTimer: any;
 	loadError: string;
 
 	onServiceCallStart(): void {
 		this.loadError = null;
+		this.progressType = 'indeterminate';
+		this.progressValue = 0;
 		this.loadTimer = setTimeout(() => this.loading = true, 300 );
+	}
+
+	onServiceCallProgress( percent: number ): void {
+		this.progressType = 'determinate';
+		this.progressValue = percent;
 	}
 
 	onServiceCallEnd(): void {
