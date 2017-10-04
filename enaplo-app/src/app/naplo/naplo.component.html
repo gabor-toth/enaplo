@@ -1,51 +1,53 @@
-<div>
+<div class="naplo-component">
 	<div class="progress-bar-holder">
 		<md-progress-bar [mode]="progressType" [value]="progressValue" *ngIf="loading"></md-progress-bar>
 	</div>
 	<!-- 
 	<div class="spinner-holder">
 		<md-progress-spinner mode="indeterminate" *ngIf="loading" ></md-progress-spinner>
-    </div>
+	</div>
 	-->
-    <div>
+	<div>
 		<button type="button" (click)="refreshNaplok(true)" md-raised-button class="align-top">Frissítés</button>
 		<div *ngIf="loadError != null" class="inline-block alert alert-danger">
 			 <span>{{loadError}}</span>
 			 <button type="button" (click)="refreshNaplok(true)" md-raised-button>Újra</button>
-	    </div>
-    </div>
-    <md-table #table [dataSource]="naplok">
-		<ng-container mdColumnDef="azonosito">
-			<md-header-cell *mdHeaderCellDef> Azonosító </md-header-cell>
-			<md-cell *mdCellDef="let element"> {{element.azonosito}} </md-cell>
-    	</ng-container>
-    	    	
-		<ng-container mdColumnDef="nev">
-			<md-header-cell *mdHeaderCellDef> Név </md-header-cell>
-			<md-cell *mdCellDef="let element"> {{element.nev}} </md-cell>
-    	</ng-container>
-    	    	
-		<ng-container mdColumnDef="telepules">
-			<md-header-cell *mdHeaderCellDef> Települes </md-header-cell>
-			<md-cell *mdCellDef="let element"> {{element.telepules}} </md-cell>
-    	</ng-container>
+		</div>
+	</div>
 
-		<ng-container mdColumnDef="iranyitoszam">
-			<md-header-cell *mdHeaderCellDef> Irányítószám </md-header-cell>
-			<md-cell *mdCellDef="let element"> {{element.iranyitoszam}}</md-cell>
-    	</ng-container>
-    	    	
-		<ng-container mdColumnDef="helyrajziszam">
-			<md-header-cell *mdHeaderCellDef> Hrsz </md-header-cell>
-			<md-cell *mdCellDef="let element"> {{element.helyrajziszam}} </md-cell>
-    	</ng-container>
-    	    	
-		<ng-container mdColumnDef="tulajdonos">
-			<md-header-cell *mdHeaderCellDef> Tulajdonos </md-header-cell>
-			<md-cell *mdCellDef="let element"> {{element.tulajdonos.nev}} </md-cell>
-    	</ng-container>
-    	
-    	<md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
-    	<md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
-    </md-table>
+		<!-- 
+  		<md-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle="true">
+		-->
+ 		<md-expansion-panel *ngFor="let naplo of naplok" [expanded]="true" hasSpacing="true">
+   		<md-expansion-panel-header>
+	 		<md-panel-title>
+	   		{{naplo.originalString}}
+	 		</md-panel-title>
+			<md-panel-description>
+				&nbsp;<md-icon (click)="onClickSettings($event,naplo.sorszam)">settings</md-icon>
+			</md-panel-description>
+   		</md-expansion-panel-header>
+
+  		<md-expansion-panel *ngFor="let fonaplo of naplo.fonaplok" [expanded]="true" hasSpacing="true">
+			<md-expansion-panel-header>
+	  			<md-panel-title>
+				{{fonaplo.originalString}}
+	  			</md-panel-title>
+				<md-panel-description>
+					&nbsp;<md-icon>settings</md-icon>
+				</md-panel-description>
+			</md-expansion-panel-header>
+
+	  		<md-expansion-panel *ngFor="let alnaplo of fonaplo.alnaplok" [expanded]="true" hasSpacing="true">
+				<md-expansion-panel-header>
+		  			<md-panel-title>
+					{{alnaplo.originalString}}
+		  			</md-panel-title>
+					<md-panel-description>
+						&nbsp;<md-icon>settings</md-icon>
+					</md-panel-description>
+				</md-expansion-panel-header>
+			</md-expansion-panel>
+		</md-expansion-panel>
+	</md-expansion-panel>
 </div>

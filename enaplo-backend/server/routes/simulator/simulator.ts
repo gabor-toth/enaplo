@@ -4,7 +4,7 @@ import * as root from 'app-root-path';
 import * as path from 'path';
 
 export class RouterSimulator extends BaseRouter {
-	private delayResponse = 500;
+	private delayResponse = 0;
 	private responseRoot: string = path.join( root.path, 'server/routes/simulator/responses' );
 
 	register( router: Router ) {

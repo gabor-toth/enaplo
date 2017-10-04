@@ -55,8 +55,45 @@ export class Fonaplo {
 	public tulajdonos: Szemely;
 	public szerepkorok: Array<Szerepkor>;
 
+	public alnaplok: Array<Alnaplo>;
+
 	constructor() {
 		this._type = ( this as any ).constructor.name;
 		this.szerepkorok = new Array<Szerepkor>();
+	}
+
+
+	public get originalString(): string {
+		// 2017/340/7 ház2: 1039 Budajenő HRSZ:1234 (Gabtoth72 - 235847809)
+		let s = this.azonosito + ' ' + this.nev + ': ' + this.cim;
+		if ( this.tulajdonos !== undefined ) {
+			s += ' (' + this.tulajdonos.nev + ' - ' + this.tulajdonos.nuj + ' )';
+		}
+		return s;
+	}
+}
+
+export class Alnaplo {
+	public _type: string;
+	public sorszam: string;
+	public naplosorszam: string;
+	public azonosito: string;
+	public nev: string;
+	public cim: string;
+	public tulajdonos: Szemely;
+	public szerepkorok: Array<Szerepkor>;
+
+	constructor() {
+		this._type = ( this as any ).constructor.name;
+		this.szerepkorok = new Array<Szerepkor>();
+	}
+
+	public get originalString(): string {
+		// 2017/340/7 ház2: 1039 Budajenő HRSZ:1234 (Gabtoth72 - 235847809)
+		let s = this.azonosito + ' ' + this.nev + ': ' + this.cim;
+		if ( this.tulajdonos !== undefined ) {
+			s += ' (' + this.tulajdonos.nev + ' - ' + this.tulajdonos.nuj + ' )';
+		}
+		return s;
 	}
 }

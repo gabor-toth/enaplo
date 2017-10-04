@@ -1,0 +1,18 @@
+.mat-expansion-panel {
+	margin-top: 5px;
+}
+
+.mat-expansion-panel:hover {
+	/* from .mat-tab-nav-bar.mat-primary .mat-tab-link:focus */
+	/*background-color: rgba(209,196,233,.3);*/
+}
+
+.mat-expansion-panel-header-title, 
+.mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}

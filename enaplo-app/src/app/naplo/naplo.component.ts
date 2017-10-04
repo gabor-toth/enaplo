@@ -4,15 +4,13 @@ import { NaploService } from '../shared/service/naplo.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ArrayDataSource } from '../common/helper';
-
 @Component( {
 	selector: 'app-enaplo',
 	templateUrl: './naplo.component.html',
 	styleUrls: [ './naplo.component.css' ]
 } )
 export class NaploComponent extends BaseComponent implements OnInit {
-	naplok: ArrayDataSource<Naplo>;
+	naplok: Naplo[];
 	displayedColumns = [ 'azonosito', 'nev', 'iranyitoszam', 'telepules'
 		// , 'helyrajziszam', 'tulajdonos'
 	];
@@ -35,10 +33,14 @@ export class NaploComponent extends BaseComponent implements OnInit {
 	}
 
 	onEnaploLoaded( naplok: Naplo[] ): void {
-		this.naplok = new ArrayDataSource( naplok );
+		this.naplok = naplok;
 	}
 
-
+	onClickSettings( event: any, naploSorszam: string ): void {
+		// see https://stackoverflow.com/questions/35274028/stop-event-propagation-in-angular-2
+		event.stopPropagation();
+		console.log( 'clicked ' + naploSorszam );
+	}
 
 	/*
 	gotoDetail(): void {
