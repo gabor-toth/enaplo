@@ -2,10 +2,51 @@ import { BaseParser, Handler } from '../../base-parser';
 import { Fonaplo, Szemely, Szerepkor } from '../../model/naplo-model';
 import { NaploStringSplitter } from './naplo-string-splitter';
 
+/*
+insertNaploItems( 'enaploAktaFa', '23129', '
+<ul class='fa_naplo'>
+   <li class='r0'>
+      <div class='naploelem sajat' style='padding-left:38px;' tipus=1 azon='23167|20998' title='Az E-főnapló adatainak megmutatása'>
+        <i class='icon-chevron-down' openstate=1 title='Az alnaplók megmutatása/elrejtése'></i>
+        <i class='icon-list' title='E-főnapló'></i>
+        2017/2708/1-1 alapásás (ja) (Építtető, Kivitelező - napijelentésért felelős, Tervezői művezető (Nem értelmezett))
+        <i class='icon-user' title='Szerep'></i>
+      </div>
+      <ul class='fa_naplo'>
+         <li class='r1'>
+            <div class='naploelem sajat' style='padding-left:70px;' tipus=1 azon='23167|21157' title='Az E-alnapló adatainak megmutatása'>
+              <i class='icon-null'></i>
+              <i class='icon-list-alt' title='E-alnapló'></i>
+              2017/2708/1-3 bal oldali alap (Megrendelő kivitelező)
+              <i class='icon-user' title='Szerep'></i>
+            </div>
+         </li>
+         <li class='r0'>
+            <div class='naploelem sajat' style='padding-left:70px;' tipus=1 azon='23167|21158' title='Az E-alnapló adatainak megmutatása'>
+              <i class='icon-null'></i>
+              <i class='icon-list-alt' title='E-alnapló'></i>
+              2017/2708/1-4 jobb oldlai alap (Megrendelő kivitelező)
+              <i class='icon-user' title='Szerep'></i>
+            </div>
+         </li>
+      </ul>
+   </li>
+   <li class='r1'>
+      <div class='naploelem sajat' style='padding-left:38px;' tipus=1 azon='23167|20999' title='Az E-főnapló adatainak megmutatása'>
+        <i class='icon-null'></i> <i class='icon-list' title='E-főnapló'></i>
+        2017/2708/1-2 alapozás (Építtető, Építtető, Kivitelező - napijelentésért felelős, Építési műszaki ellenőr (Építészet), Felelős műszaki vezető (Épületvillamos), Biztonsági és egészségvédelmi koordinátor)
+        <i class='icon-user' title='Szerep'></i>
+     </div>
+   </li>
+</ul>
+);
+*/
+
 class FonaploCollector implements Handler {
 	private items: Array<Fonaplo>;
 	private item: Fonaplo;
-	private inDiv = true;
+	private inDiv = false;
+	private inUl = false;
 
 	constructor() {
 		this.items = new Array;
@@ -22,10 +63,8 @@ class FonaploCollector implements Handler {
 	}
 
 	public ontext( text: string ): void {
-		if ( this.inDiv ) {
-			if ( this.processData( text ) ) {
-				this.inDiv = false;
-			}
+		if ( this.inDiv && this.processData( text ) ) {
+			this.inDiv = false;
 		}
 	}
 
@@ -84,26 +123,3 @@ export class FonaploParser extends BaseParser {
 	}
 }
 
-/*
- insertNaploItems('enaploAktaFa','23129','
-  <ul class=\'fa_naplo\'>
-  <li class=\'r0\'>
-    <div class=\'naploelem sajat\' style=\'padding-left:38px;\'
-        tipus=1
-        azon=\'23129|20963\' title=\'Az E-főnapló adatainak megmutatása\'>
-      <i class=\'icon-null\'></i> <i class=\'icon-list\' title=\'E-főnapló\'></i>
-      2017/1347/4-1 blabla (Építtető)
-      <i class=\'icon-user\' title=\'Szerep\'></i>
-    </div>
-  </li>
-  <li class=\'r1\'>
-    <div class=\'naploelem sajat\' style=\'padding-left:38px;\'
-        tipus=1
-        azon=\'23129|20964\' title=\'Az E-főnapló adatainak megmutatása\'>
-      <i class=\'icon-null\'></i> <i class=\'icon-list\' title=\'E-főnapló\'></i>
-      2017/1347/4-2 alap (Építtető, Kivitelező - napijelentésért felelős, Kivitelező - napijelentésre jogosult)
-      <i class=\'icon-user\' title=\'Szerep\'></i>
-    </div>
-  </li>
-  </ul>');
-*/
