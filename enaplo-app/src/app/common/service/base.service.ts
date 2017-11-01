@@ -1,6 +1,7 @@
+import { Http, Headers } from '@angular/http';
+
 import { ServiceCallStateObserver } from './service-call-state-callback';
 import { ServiceLocator } from './service-locator';
-import { Http } from '@angular/http';
 
 export abstract class BaseService {
 	public static readonly ERROR_UNKNOWN = -1;

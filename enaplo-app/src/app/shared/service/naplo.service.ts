@@ -1,13 +1,12 @@
-import { ServiceCallStateObserver } from '../../common/service/service-call-state-callback';
 import { Injectable } from '@angular/core';
 import { Headers, Http, Response } from '@angular/http';
+import 'rxjs/add/operator/toPromise';
+
+import { ServiceCallStateObserver } from '../../common/service/service-call-state-callback';
 
 import { Naplo } from '../model/naplo-model';
 import { EnaploBaseService } from './enaplo-base.service';
 import { FonaploParser } from './parsers/fonaplo-parser';
-
-import 'rxjs/add/operator/toPromise';
-
 import { NaploParser } from './parsers/naplo-parser';
 
 class FonaploFetcher {

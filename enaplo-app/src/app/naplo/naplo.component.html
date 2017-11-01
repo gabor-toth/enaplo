@@ -18,7 +18,7 @@
 		<!-- 
   		<mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle="true">
 		-->
- 		<mat-expansion-panel *ngFor="let naplo of naplok" [expanded]="true" hasSpacing="true">
+ 		<mat-expansion-panel *ngFor="let naplo of naplok" [expanded]="true">
    		<mat-expansion-panel-header>
 	 		<mat-panel-title>
 	   		{{naplo.originalString}}
@@ -28,7 +28,7 @@
 			</mat-panel-description>
    		</mat-expansion-panel-header>
 
-  		<mat-expansion-panel *ngFor="let fonaplo of naplo.fonaplok" [expanded]="true" hasSpacing="true">
+  		<mat-expansion-panel *ngFor="let fonaplo of naplo.fonaplok" [expanded]="true">
 			<mat-expansion-panel-header>
 	  			<mat-panel-title>
 				{{fonaplo['originalString']}}
@@ -38,7 +38,7 @@
 				</mat-panel-description>
 			</mat-expansion-panel-header>
 
-	  		<mat-expansion-panel *ngFor="let alnaplo of fonaplo.alnaplok" [expanded]="true" hasSpacing="true">
+	  		<mat-expansion-panel *ngFor="let alnaplo of fonaplo.alnaplok" [expanded]="true">
 				<mat-expansion-panel-header>
 		  			<mat-panel-title>
 					{{alnaplo['originalString']}}
