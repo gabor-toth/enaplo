@@ -5,3 +5,4 @@
 /chrome-app/index.html
 /chrome-app/manifest.json
 /chrome-app/*.bundle.*
+/package-lock.json
