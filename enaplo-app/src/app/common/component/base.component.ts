@@ -1,7 +1,10 @@
 import { BaseService } from '../service/base.service';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 
+import { ServiceLocator } from '../../common/service/service-locator';
 import { ServiceCallStateObserver } from '../service/service-call-state-callback';
+import { environment } from '../../../environments/environment';
 
 export class BaseComponent implements ServiceCallStateObserver {
 	loading = false;
@@ -9,6 +12,11 @@ export class BaseComponent implements ServiceCallStateObserver {
 	progressValue = 0;
 	loadTimer: any;
 	loadError: string;
+	snackBar: MatSnackBar;
+
+	constructor() {
+		this.snackBar = ServiceLocator.injector.get( MatSnackBar );
+	}
 
 	onServiceCallStart(): void {
 		this.loadError = null;
@@ -29,17 +37,31 @@ export class BaseComponent implements ServiceCallStateObserver {
 	}
 
 	onServiceError( error: number ): void {
+		let message: string;
+		const actionLabel: string = undefined;
 		switch ( error ) {
 			case BaseService.ERROR_CONNECTION_REFUSED:
-				// TODO i18n
-				this.loadError = 'A szerver nem elérhető. Kérem ellenőrizze az internetkapcsolatát.';
+				message = 'A szerver nem elérhető. Kérem ellenőrizze az internetkapcsolatát.';
+				// actionLabel = 'Újra';
 				break;
 			case BaseService.ERROR_UNATHORIZED:
-				this.loadError = 'Lépjen be az E-napló rendszerbe egy másik ablakban. <a href="" target="_blank">Link</a>';
+				message = 'Lépjen be az E-napló rendszerbe egy másik ablakban. <a href="" target="_blank">Link</a>';
 				break;
 			default:
-				this.loadError = 'Ismeretlen hiba';
+				message = 'Ismeretlen hiba';
 				break;
 		}
+		// { extraClasses: [ 'alert-danger' ] }
+		const snackBarRef = this.snackBar.open( message, actionLabel );
+		if ( actionLabel !== undefined ) {
+			snackBarRef.onAction().subscribe(() => {
+				// refreshNaplok(true)
+				console.log( 'The snack-bar action was triggered!' );
+			} );
+		}
+	}
+
+	protected getLocalStorageName( componentDotPropertyName: string ): string {
+		return environment.localStorageName + '.' + componentDotPropertyName;
 	}
 }

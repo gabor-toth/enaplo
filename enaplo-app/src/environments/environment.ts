@@ -5,5 +5,6 @@
 
 export const environment = {
 	production: false,
-	enaploServiceUrl: 'http://localhost:3000/enaplo_demo/ajax'
+	enaploServiceUrl: 'http://localhost:3000/enaplo_demo/ajax',
+	localStorageName: 'Enaplo'
 };

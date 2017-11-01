@@ -1,5 +1,15 @@
 .mat-expansion-panel {
-	margin-top: 5px;
+    margin-top: 2px;
+    margin-left: 1px;
+    margin-bottom: 3px;
+}
+
+.mat-expansion-panel-body {
+    margin: 0 0 16px 24px;
+}
+
+.mat-expansion-panel-header-description {
+    flex-grow: 0.2;
 }
 
 .mat-expansion-panel:hover {

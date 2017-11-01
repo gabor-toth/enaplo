@@ -7,18 +7,14 @@
 		<mat-progress-spinner mode="indeterminate" *ngIf="loading" ></mat-progress-spinner>
 	</div>
 	-->
-	<div>
-		<button type="button" (click)="refreshNaplok(true)" mat-raised-button class="align-top">Frissítés</button>
-		<div *ngIf="loadError != null" class="inline-block alert alert-danger">
-			 <span>{{loadError}}</span>
-			 <button type="button" (click)="refreshNaplok(true)" mat-raised-button>Újra</button>
-		</div>
-	</div>
 
-		<!-- 
-  		<mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle="true">
-		-->
- 		<mat-expansion-panel *ngFor="let naplo of naplok" [expanded]="true">
+	<!-- 
+	<mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle="true">
+	-->
+	<mat-expansion-panel *ngFor="let naplo of naplok" [expanded]="!mapOfClosedNaplos[naplo.sorszam]" (closed)="toggleNaplo(naplo.sorszam,false)" (opened)="toggleNaplo(naplo.sorszam,true)">
+		<div *ngIf="naplo.fonaplok.length == 0" class="">
+			Nincs főnapló.
+		</div>
    		<mat-expansion-panel-header>
 	 		<mat-panel-title>
 	   		{{naplo.originalString}}
@@ -28,7 +24,7 @@
 			</mat-panel-description>
    		</mat-expansion-panel-header>
 
-  		<mat-expansion-panel *ngFor="let fonaplo of naplo.fonaplok" [expanded]="true">
+  		<mat-expansion-panel *ngFor="let fonaplo of naplo.fonaplok" [expanded]="!mapOfClosedNaplos[fonaplo['sorszam']]" (closed)="toggleNaplo(fonaplo.sorszam,false)" (opened)="toggleNaplo(fonaplo.sorszam,true)">
 			<mat-expansion-panel-header>
 	  			<mat-panel-title>
 				{{fonaplo['originalString']}}
@@ -38,7 +34,7 @@
 				</mat-panel-description>
 			</mat-expansion-panel-header>
 
-	  		<mat-expansion-panel *ngFor="let alnaplo of fonaplo.alnaplok" [expanded]="true">
+	  		<mat-expansion-panel *ngFor="let alnaplo of fonaplo['alnaplok']" [expanded]="!mapOfClosedNaplos[alnaplo['sorszam']]" (closed)="toggleNaplo(alnaplo.sorszam,false)" (opened)="toggleNaplo(alnaplo.sorszam,true)">
 				<mat-expansion-panel-header>
 		  			<mat-panel-title>
 					{{alnaplo['originalString']}}

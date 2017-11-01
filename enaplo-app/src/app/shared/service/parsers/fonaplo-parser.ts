@@ -1,5 +1,5 @@
 import { BaseParser, Handler } from '../../base-parser';
-import { Fonaplo, Szemely, Szerepkor } from '../../model/naplo-model';
+import { Fonaplo, Szemely, Szerepkor, NaploBase, Alnaplo } from '../../model/naplo-model';
 import { NaploStringSplitter } from './naplo-string-splitter';
 
 /*
@@ -44,17 +44,26 @@ insertNaploItems( 'enaploAktaFa', '23129', '
 
 class FonaploCollector implements Handler {
 	private items: Array<Fonaplo>;
-	private item: Fonaplo;
+	private parent: Fonaplo;
+	private item: NaploBase;
 	private inDiv = false;
-	private inUl = false;
+	private ulLevel = 0;
 
 	constructor() {
 		this.items = new Array;
 	}
 
 	public onopentag( tagname: string, attributes: { [ type: string ]: string } ): void {
-		if ( tagname === 'div' ) {
-			this.item = new Fonaplo();
+		if ( tagname === 'ul' ) {
+			this.ulLevel++;
+		} else if ( tagname === 'div' ) {
+			if ( this.ulLevel == 1 ) {
+				this.item = this.parent = new Fonaplo();
+				this.items.push( this.parent );
+			} else {
+				this.item = new Alnaplo();
+				this.parent.alnaplok.push( this.item );
+			}
 			const ids = attributes.azon.split( '|' );
 			this.item.naplosorszam = ids[ 0 ];
 			this.item.sorszam = ids[ 1 ];
@@ -69,7 +78,9 @@ class FonaploCollector implements Handler {
 	}
 
 	public onclosetag( tagname: string ): void {
-		if ( tagname === 'div' ) {
+		if ( tagname === 'ul' ) {
+			this.ulLevel--;
+		} else if ( tagname === 'div' ) {
 			this.inDiv = false;
 		}
 	}
@@ -89,7 +100,7 @@ class FonaploCollector implements Handler {
 		const matches = regex.exec( text );
 
 		if ( roles == null || matches == null || matches.length != 3 ) {
-			throw new SyntaxError( 'Unparseable fonaplo data: \'' + text + '\'' );
+			throw new SyntaxError( 'Unparseable naplo data: \'' + text + '\'' );
 		}
 
 		let index = 1;
@@ -100,7 +111,6 @@ class FonaploCollector implements Handler {
 			this.item.szerepkorok.push( new Szerepkor( role ) );
 		}
 
-		this.items.push( this.item );
 		this.item = null;
 
 		return true;

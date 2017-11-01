@@ -11,19 +11,33 @@ import { NaploService } from '../shared/service/naplo.service';
 	styleUrls: [ './naplo.component.css' ]
 } )
 export class NaploComponent extends BaseComponent implements OnInit {
+	localStorageNameMapOfClosedNaplos = 'NaploComponent' + '.' + 'mapOfClosedNaplos';
+
 	naplok: Naplo[];
 	displayedColumns = [ 'azonosito', 'nev', 'iranyitoszam', 'telepules'
 		// , 'helyrajziszam', 'tulajdonos'
 	];
+	mapOfClosedNaplos = {};
 
-	constructor( private enaploService: NaploService,
-		private router: Router ) {
+	constructor( private enaploService: NaploService, private router: Router ) {
 		super();
-
+		const map = JSON.parse( localStorage.getItem( this.getLocalStorageName( this.localStorageNameMapOfClosedNaplos ) ) );
+		if ( map !== null ) {
+			this.mapOfClosedNaplos = map;
+		}
 	}
 
 	ngOnInit() {
 		this.refreshNaplok( false );
+	}
+
+	toggleNaplo( naploId: number, opened: boolean ): void {
+		if ( opened ) {
+			delete this.mapOfClosedNaplos[ naploId ];
+		} else {
+			this.mapOfClosedNaplos[ naploId ] = true;
+		}
+		localStorage.setItem( this.getLocalStorageName( this.localStorageNameMapOfClosedNaplos ), JSON.stringify( this.mapOfClosedNaplos ) );
 	}
 
 	refreshNaplok( forceReload: any ): void {
