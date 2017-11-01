@@ -4,13 +4,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-// import { MaterialModule } from '@angular/material';
-
 import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 
 import { AllMaterialModule } from './common/module/material.module';
-
-import { AppComponent } from './app.component';
 import { NaploComponent } from './naplo/naplo.component';
 import { NaploService } from './shared/service/naplo.service';
 
@@ -26,8 +23,7 @@ import { NaploService } from './shared/service/naplo.service';
 		ReactiveFormsModule, // https://angular.io/guide/reactive-forms
 		AllMaterialModule,
 		HttpModule,
-		AppRoutingModule
-		// MdNativeDateModule
+		AppRoutingModule,
 	],
 	providers: [ NaploService ],
 	bootstrap: [ AppComponent ]

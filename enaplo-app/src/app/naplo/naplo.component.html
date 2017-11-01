@@ -1,53 +1,53 @@
 <div class="naplo-component">
 	<div class="progress-bar-holder">
-		<md-progress-bar [mode]="progressType" [value]="progressValue" *ngIf="loading"></md-progress-bar>
+		<mat-progress-bar [mode]="progressType" [value]="progressValue" *ngIf="loading"></mat-progress-bar>
 	</div>
 	<!-- 
 	<div class="spinner-holder">
-		<md-progress-spinner mode="indeterminate" *ngIf="loading" ></md-progress-spinner>
+		<mat-progress-spinner mode="indeterminate" *ngIf="loading" ></mat-progress-spinner>
 	</div>
 	-->
 	<div>
-		<button type="button" (click)="refreshNaplok(true)" md-raised-button class="align-top">Frissítés</button>
+		<button type="button" (click)="refreshNaplok(true)" mat-raised-button class="align-top">Frissítés</button>
 		<div *ngIf="loadError != null" class="inline-block alert alert-danger">
 			 <span>{{loadError}}</span>
-			 <button type="button" (click)="refreshNaplok(true)" md-raised-button>Újra</button>
+			 <button type="button" (click)="refreshNaplok(true)" mat-raised-button>Újra</button>
 		</div>
 	</div>
 
 		<!-- 
-  		<md-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle="true">
+  		<mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle="true">
 		-->
- 		<md-expansion-panel *ngFor="let naplo of naplok" [expanded]="true" hasSpacing="true">
-   		<md-expansion-panel-header>
-	 		<md-panel-title>
+ 		<mat-expansion-panel *ngFor="let naplo of naplok" [expanded]="true" hasSpacing="true">
+   		<mat-expansion-panel-header>
+	 		<mat-panel-title>
 	   		{{naplo.originalString}}
-	 		</md-panel-title>
-			<md-panel-description>
-				&nbsp;<md-icon (click)="onClickSettings($event,naplo.sorszam)">settings</md-icon>
-			</md-panel-description>
-   		</md-expansion-panel-header>
+	 		</mat-panel-title>
+			<mat-panel-description>
+				&nbsp;<mat-icon (click)="onClickSettings($event,naplo.sorszam)">settings</mat-icon>
+			</mat-panel-description>
+   		</mat-expansion-panel-header>
 
-  		<md-expansion-panel *ngFor="let fonaplo of naplo.fonaplok" [expanded]="true" hasSpacing="true">
-			<md-expansion-panel-header>
-	  			<md-panel-title>
-				{{fonaplo.originalString}}
-	  			</md-panel-title>
-				<md-panel-description>
-					&nbsp;<md-icon>settings</md-icon>
-				</md-panel-description>
-			</md-expansion-panel-header>
+  		<mat-expansion-panel *ngFor="let fonaplo of naplo.fonaplok" [expanded]="true" hasSpacing="true">
+			<mat-expansion-panel-header>
+	  			<mat-panel-title>
+				{{fonaplo['originalString']}}
+	  			</mat-panel-title>
+				<mat-panel-description>
+					&nbsp;<mat-icon>settings</mat-icon>
+				</mat-panel-description>
+			</mat-expansion-panel-header>
 
-	  		<md-expansion-panel *ngFor="let alnaplo of fonaplo.alnaplok" [expanded]="true" hasSpacing="true">
-				<md-expansion-panel-header>
-		  			<md-panel-title>
-					{{alnaplo.originalString}}
-		  			</md-panel-title>
-					<md-panel-description>
-						&nbsp;<md-icon>settings</md-icon>
-					</md-panel-description>
-				</md-expansion-panel-header>
-			</md-expansion-panel>
-		</md-expansion-panel>
-	</md-expansion-panel>
+	  		<mat-expansion-panel *ngFor="let alnaplo of fonaplo.alnaplok" [expanded]="true" hasSpacing="true">
+				<mat-expansion-panel-header>
+		  			<mat-panel-title>
+					{{alnaplo['originalString']}}
+		  			</mat-panel-title>
+					<mat-panel-description>
+						&nbsp;<mat-icon>settings</mat-icon>
+					</mat-panel-description>
+				</mat-expansion-panel-header>
+			</mat-expansion-panel>
+		</mat-expansion-panel>
+	</mat-expansion-panel>
 </div>

@@ -16,7 +16,7 @@ body {
  * Material overrides 
  */
 
-md-row.mat-row:hover {
+mat-row.mat-row:hover {
 	/* same as .mat-tab-nav-bar.mat-primary .mat-tab-link:focus */
 	background-color: rgba(209,196,233,.3);
 }

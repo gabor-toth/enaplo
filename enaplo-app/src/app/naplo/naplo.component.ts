@@ -1,8 +1,9 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { BaseComponent } from '../common/component/base.component';
 import { Naplo } from '../shared/model/naplo-model';
 import { NaploService } from '../shared/service/naplo.service';
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component( {
 	selector: 'app-enaplo',
