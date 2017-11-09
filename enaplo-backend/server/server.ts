@@ -16,7 +16,7 @@ app.set( 'view engine', 'ejs' );
 
 // modules
 app.use( logger( config.dev ? 'dev' : 'combined' ) );
-app.use( bodyParser.text( 'text' ) );
+app.use( bodyParser.text( { defaultCharset: 'utf-8' } ) );
 // app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded( {
 	extended: false

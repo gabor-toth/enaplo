@@ -1,4 +1,4 @@
-import { BaseParser, Handler } from '../../base-parser';
+import { BaseHtmlParser, Handler } from '../../base-html-parser';
 import { Fonaplo, Szemely, Szerepkor, NaploBase, Alnaplo } from '../../model/naplo-model';
 import { NaploStringSplitter } from './naplo-string-splitter';
 
@@ -121,7 +121,7 @@ class FonaploCollector implements Handler {
 	}
 }
 
-export class FonaploParser extends BaseParser {
+export class FonaploParser extends BaseHtmlParser<FonaploParser> {
 	public parse(): Array<Fonaplo> {
 		this.skip( 'insertNaploItems(\'enaploAktaFa\',' );
 		this.readString(); // id

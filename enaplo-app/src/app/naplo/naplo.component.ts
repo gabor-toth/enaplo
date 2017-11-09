@@ -11,33 +11,36 @@ import { NaploService } from '../shared/service/naplo.service';
 	styleUrls: [ './naplo.component.css' ]
 } )
 export class NaploComponent extends BaseComponent implements OnInit {
-	localStorageNameMapOfClosedNaplos = 'NaploComponent' + '.' + 'mapOfClosedNaplos';
+	readonly nameOfMapClosedNaplos = 'mapOfClosedNaplos';
+	readonly nameOfMapOfHiddenNaplos = 'mapOfHiddenNaplos';
 
 	naplok: Naplo[];
 	displayedColumns = [ 'azonosito', 'nev', 'iranyitoszam', 'telepules'
 		// , 'helyrajziszam', 'tulajdonos'
 	];
 	mapOfClosedNaplos = {};
+	mapOfHiddenNaplos = {};
 
 	constructor( private enaploService: NaploService, private router: Router ) {
 		super();
-		const map = JSON.parse( localStorage.getItem( this.getLocalStorageName( this.localStorageNameMapOfClosedNaplos ) ) );
-		if ( map !== null ) {
-			this.mapOfClosedNaplos = map;
-		}
+		this.loadSettings();
 	}
 
 	ngOnInit() {
 		this.refreshNaplok( false );
 	}
 
+	protected getComponentName(): string {
+		return 'NaploComponent';
+	}
+
+	private loadSettings(): void {
+		this.mapOfClosedNaplos = this.loadSettingsWithDefault( this.nameOfMapClosedNaplos, {} );
+		this.mapOfHiddenNaplos = this.loadSettingsWithDefault( this.nameOfMapOfHiddenNaplos, {} );
+	}
+
 	toggleNaplo( naploId: number, opened: boolean ): void {
-		if ( opened ) {
-			delete this.mapOfClosedNaplos[ naploId ];
-		} else {
-			this.mapOfClosedNaplos[ naploId ] = true;
-		}
-		localStorage.setItem( this.getLocalStorageName( this.localStorageNameMapOfClosedNaplos ), JSON.stringify( this.mapOfClosedNaplos ) );
+		this.setOrClearValueInSettingsMap( this.mapOfClosedNaplos, naploId, opened ? undefined : true, this.nameOfMapClosedNaplos );
 	}
 
 	refreshNaplok( forceReload: any ): void {

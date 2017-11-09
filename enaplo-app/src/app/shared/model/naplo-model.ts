@@ -49,9 +49,9 @@ export class Naplo {
 export class NaploBase {
 	public _type: string;
 	public sorszam: string;
-	public naplosorszam: string;
 	public azonosito: string;
 	public nev: string;
+	public naplosorszam: string;
 	public cim: string;
 	public tulajdonos: Szemely;
 	public szerepkorok: Array<Szerepkor>;
@@ -60,7 +60,6 @@ export class NaploBase {
 		this._type = _type;
 		this.szerepkorok = new Array<Szerepkor>();
 	}
-
 
 	public get originalString(): string {
 		// 2017/340/7 ház2: 1039 Budajenő HRSZ:1234 (Gabtoth72 - 235847809)
@@ -74,8 +73,6 @@ export class NaploBase {
 		return s;
 	}
 }
-
-
 
 
 export class Fonaplo extends NaploBase {

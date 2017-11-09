@@ -4,8 +4,8 @@
     margin-bottom: 3px;
 }
 
-.mat-expansion-panel-body {
-    margin: 0 0 16px 24px;
+:host ::ng-deep .mat-expansion-panel-body {
+    margin: 0px 0px 0px 24px;
 }
 
 .mat-expansion-panel-header-description {
@@ -25,4 +25,16 @@
 .mat-expansion-panel-header-description {
   justify-content: space-between;
   align-items: center;
+}
+
+.szerepkorok {
+	margin-bottom: 8px;
+}
+
+.szerepkor {
+	display: inline-block;
+}
+
+.szerepkor:not(:last-child):after {
+	content: ', ';
 }

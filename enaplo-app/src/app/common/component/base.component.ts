@@ -6,7 +6,7 @@ import { ServiceLocator } from '../../common/service/service-locator';
 import { ServiceCallStateObserver } from '../service/service-call-state-callback';
 import { environment } from '../../../environments/environment';
 
-export class BaseComponent implements ServiceCallStateObserver {
+export abstract class BaseComponent implements ServiceCallStateObserver {
 	loading = false;
 	progressType = 'indeterminate';
 	progressValue = 0;
@@ -17,6 +17,8 @@ export class BaseComponent implements ServiceCallStateObserver {
 	constructor() {
 		this.snackBar = ServiceLocator.injector.get( MatSnackBar );
 	}
+
+	protected abstract getComponentName(): string;
 
 	onServiceCallStart(): void {
 		this.loadError = null;
@@ -61,7 +63,23 @@ export class BaseComponent implements ServiceCallStateObserver {
 		}
 	}
 
-	protected getLocalStorageName( componentDotPropertyName: string ): string {
-		return environment.localStorageName + '.' + componentDotPropertyName;
+	protected getLocalStorageName( propertyName: string ): string {
+		return environment.localStorageName + '.' + this.getComponentName() + '.' + propertyName;
+	}
+
+	protected loadSettingsWithDefault( propertyName: string, defaultValue: any ): any {
+		const value = JSON.parse( localStorage.getItem( this.getLocalStorageName( propertyName ) ) );
+		return value !== null ? value : defaultValue;
+	}
+
+	protected setOrClearValueInSettingsMap( mapOfValues: any, key: any, value: any, propertyName?: string ): void {
+		if ( value === undefined ) {
+			delete mapOfValues[ key ];
+		} else {
+			mapOfValues[ key ] = value;
+		}
+		if ( propertyName !== undefined ) {
+			localStorage.setItem( this.getLocalStorageName( propertyName ), JSON.stringify( mapOfValues ) );
+		}
 	}
 }

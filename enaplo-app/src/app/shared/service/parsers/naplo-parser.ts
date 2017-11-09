@@ -1,4 +1,4 @@
-import { BaseParser, Handler } from '../../base-parser';
+import { BaseHtmlParser, Handler } from '../../base-html-parser';
 import { Naplo, Szemely } from '../../model/naplo-model';
 
 class NaploCollector implements Handler {
@@ -52,7 +52,7 @@ class NaploCollector implements Handler {
 	}
 }
 
-export class NaploParser extends BaseParser {
+export class NaploParser extends BaseHtmlParser<NaploParser> {
 	public parse(): Naplo[] {
 		this.skip( '$(\'#enaploAktaFa\').html(' );
 		const html = this.readString();
