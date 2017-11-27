@@ -34,10 +34,10 @@
   "devDependencies": {
     "@types/htmlparser2": "^3.7.31",
     "@types/morgan": "^1.7.35",
-    "@types/node": "^8.0.32",
+    "@types/node": "^8.0.53",
     "ts-loader": "^2.3.7",
     "tslint": "~5.3.2",
-    "typescript": "^2.5.3",
+    "typescript": "^2.6.2",
     "webpack": "^3.8.1"
   }
 }
