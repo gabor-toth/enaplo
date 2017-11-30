@@ -24,7 +24,7 @@ export abstract class BaseComponent implements ServiceCallStateObserver {
 		this.loadError = null;
 		this.progressType = 'indeterminate';
 		this.progressValue = 0;
-		this.loadTimer = setTimeout(() => this.loading = true, 300 );
+		this.loadTimer = setTimeout( () => this.loading = true, 300 );
 	}
 
 	onServiceCallProgress( percent: number ): void {
@@ -40,25 +40,30 @@ export abstract class BaseComponent implements ServiceCallStateObserver {
 
 	onServiceError( error: number ): void {
 		let message: string;
-		const actionLabel: string = undefined;
+		let actionLabel: string;
+		let action;
 		switch ( error ) {
 			case BaseService.ERROR_CONNECTION_REFUSED:
 				message = 'A szerver nem elérhető. Kérem ellenőrizze az internetkapcsolatát.';
 				// actionLabel = 'Újra';
 				break;
 			case BaseService.ERROR_UNATHORIZED:
-				message = 'Lépjen be az E-napló rendszerbe egy másik ablakban. <a href="" target="_blank">Link</a>';
+				message = 'Lépjen be az E-napló rendszerbe egy másik ablakban.';
+				actionLabel = 'Link';
+				action = function() {
+					console.log( 'The snack-bar action was triggered!' );
+					window.open( environment.enaploLoginUrl, '_blank ' );
+				};
 				break;
 			default:
 				message = 'Ismeretlen hiba';
 				break;
 		}
 		// { extraClasses: [ 'alert-danger' ] }
-		const snackBarRef = this.snackBar.open( message, actionLabel );
-		if ( actionLabel !== undefined ) {
-			snackBarRef.onAction().subscribe(() => {
-				// refreshNaplok(true)
-				console.log( 'The snack-bar action was triggered!' );
+		const snackBarRef = this.snackBar.open( message, actionLabel, { politeness: 'assertive' } );
+		if ( actionLabel !== undefined && action !== undefined ) {
+			snackBarRef.onAction().subscribe( () => {
+				action();
 			} );
 		}
 	}

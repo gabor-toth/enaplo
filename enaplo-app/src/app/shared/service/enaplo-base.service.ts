@@ -7,7 +7,7 @@ import { BaseParser } from '../base-parser';
 
 export abstract class EnaploBaseService extends BaseService {
 	protected readonly apiUrl;
-	protected htmlId: '_htmlid_';
+	protected htmlId = '_htmlid_';
 
 	constructor() {
 		super();

@@ -2,6 +2,8 @@
 
 // @Service
 
+const minimist = require( 'minimist' );
+
 export class Config {
 	private _targetUrlBase: string;
 	private _corsUrl: any;
@@ -10,7 +12,7 @@ export class Config {
 	private _hasSimulator: boolean;
 
 	constructor() {
-		const argv = require( 'minimist' )( process.argv.slice( 2 ) );
+		const argv = minimist( process.argv.slice( 2 ) );
 		this._dev = ( process.env.NODE_ENV || 'development' ) === 'development';
 
 		this.setListenOnPort( argv );
