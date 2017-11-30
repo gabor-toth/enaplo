@@ -34,7 +34,7 @@ export class BaseRouter {
 		response.json( ApiResponse.proxy( config.targetUrlBase + urlPart ) );
 	}
 
-	protected parseBody( request: Request, response: Response, parser: BaseParser ): void {
+	protected parseBodyAndSendAsResponse( request: Request, response: Response, parser: BaseParser ): void {
 		const data = request.body;
 		if ( !this.checkParameter( response, 'body', data ) ) {
 			return;
@@ -42,5 +42,15 @@ export class BaseRouter {
 
 		const parsedData = parser.setData( data ).parse();
 		response.json( ApiResponse.data( parsedData ) );
+	}
+
+	protected getParsedJsonBody( request: Request, response: Response ): any {
+		const data = request.body;
+		if ( !this.checkParameter( response, 'body', data ) ) {
+			return undefined;
+		}
+
+		const parsedData = JSON.parse( data );
+		return parsedData;
 	}
 }

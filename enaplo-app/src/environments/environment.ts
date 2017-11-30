@@ -6,6 +6,7 @@
 export const environment = {
 	production: false,
 	enaploServiceUrl: 'http://localhost:3000/enaplo_demo/ajax',
+	backendServiceUrl: 'http://localhost:3000/api',
 	enaploLoginUrl: 'https://enaplo.e-epites.hu/enaplo_demo/',
 	localStorageName: 'Enaplo'
 };

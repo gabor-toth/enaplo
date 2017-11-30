@@ -56,7 +56,7 @@ export class NaploService extends EnaploBaseService {
 		}
 		this.cachedNaplok = null;
 		stateObserver.onServiceCallStart();
-		return this.httpGet( '?method=naplofa_load&id=%23page_enaplok' )
+		return this.httpGetApi( '?method=naplofa_load&id=%23page_enaplok' )
 			.toPromise()
 			.then( response => this.receivedResponse( response, stateObserver ) )
 			.catch( error => this.handleError( error, stateObserver ) );
@@ -68,7 +68,7 @@ export class NaploService extends EnaploBaseService {
 	}
 
 	getFonaplok( naploId: string ): Promise<Response> {
-		return this.httpGet( '?method=get_naplo_items&parentid=enaploAktaFa&aktaid=' + naploId ).toPromise();
+		return this.httpGetApi( '?method=get_naplo_items&parentid=enaploAktaFa&aktaid=' + naploId ).toPromise();
 	}
 
 	/*

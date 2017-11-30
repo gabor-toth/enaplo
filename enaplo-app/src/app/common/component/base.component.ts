@@ -49,9 +49,8 @@ export abstract class BaseComponent implements ServiceCallStateObserver {
 				break;
 			case BaseService.ERROR_UNATHORIZED:
 				message = 'Lépjen be az E-napló rendszerbe egy másik ablakban.';
-				actionLabel = 'Link';
+				actionLabel = 'Megnyitás';
 				action = function() {
-					console.log( 'The snack-bar action was triggered!' );
 					window.open( environment.enaploLoginUrl, '_blank ' );
 				};
 				break;
