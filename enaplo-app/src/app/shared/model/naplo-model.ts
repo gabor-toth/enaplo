@@ -14,29 +14,40 @@ export class Szerepkor {
 	public azonosito: string;
 	public nev: string;
 
-	constructor( azonosito?: string ) {
+	constructor( nev?: string ) {
 		this._type = 'Szerepkor';
-		this.azonosito = azonosito;
+		this.nev = nev;
 	}
 }
 
-export class Naplo {
+export abstract class NaploBase {
 	public _type: string;
 	public sorszam: string;
 	public azonosito: string;
 	public nev: string;
+	public naplosorszam: string;
+	public szerepkorok: Array<Szerepkor>;
+	public naplok: Array<NaploBase>;
+
+	constructor( _type: string ) {
+		this._type = _type;
+		this.szerepkorok = new Array<Szerepkor>();
+		this.naplok = [];
+	}
+
+	abstract get originalString(): string;
+
+}
+
+export class Naplo extends NaploBase {
 	public telepules: string;
 	public iranyitoszam: string;
 	public helyrajziszam: string;
 	public tulajdonos: Szemely;
-	public szerepkorok: Array<Szerepkor>;
 
-	public fonaplok: Array<Fonaplo>;
 
 	constructor() {
-		this._type = 'Naplo';
-		this.szerepkorok = new Array<Szerepkor>();
-		this.fonaplok = [];
+		super( 'Naplo' );
 	}
 
 	public get originalString(): string {
@@ -46,19 +57,12 @@ export class Naplo {
 	}
 }
 
-export class NaploBase {
-	public _type: string;
-	public sorszam: string;
-	public azonosito: string;
-	public nev: string;
-	public naplosorszam: string;
+export class NaploSubBase extends NaploBase {
 	public cim: string;
 	public tulajdonos: Szemely;
-	public szerepkorok: Array<Szerepkor>;
 
 	constructor( _type: string ) {
-		this._type = _type;
-		this.szerepkorok = new Array<Szerepkor>();
+		super( _type );
 	}
 
 	public get originalString(): string {
@@ -75,16 +79,13 @@ export class NaploBase {
 }
 
 
-export class Fonaplo extends NaploBase {
-	public alnaplok: Array<Alnaplo>;
-
+export class Fonaplo extends NaploSubBase {
 	constructor() {
 		super( 'Fonaplo' );
-		this.alnaplok = [];
 	}
 }
 
-export class Alnaplo extends NaploBase {
+export class Alnaplo extends NaploSubBase {
 	constructor() {
 		super( 'Alnaplo' );
 	}

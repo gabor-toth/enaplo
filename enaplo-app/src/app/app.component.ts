@@ -22,6 +22,7 @@ export class AppComponent {
 		ServiceLocator.injector = this.injector;
 
 		this.tabs = [
+			{ route: 'szerepkorok', label: 'Szerepkörök' },
 			{ route: 'naplok', label: 'Naplók' },
 			{ route: 'teendok', label: 'Teendők' },
 			{ route: 'beallitasok', label: 'Beállítások' }

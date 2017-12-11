@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { LocalStorageService } from '../../common/service/local-storage.service';
+import { Injectable, ValueProvider } from '@angular/core';
 import { Response } from '@angular/http';
 
 import { ValueItem } from '../model/value-item';
@@ -9,12 +10,51 @@ import { ValueListParser } from './parsers/value-list-parser';
 export class ValueListsService extends EnaploBaseService {
 	private cache = {};
 
-	constructor() {
+	constructor( private localStorageService: LocalStorageService ) {
 		super();
+		this.loadFromCache();
+	}
+
+	private loadFromCache(): any {
+		this.cache = this.localStorageService.getItemWithDefault( this.getComponentName(), null, {} );
+	}
+
+	protected getComponentName(): string {
+		return 'ValueLists';
+	}
+
+	public clearAllCaches(): void {
+		this.cache = {};
+		this.localStorageService.setItem( this.getComponentName(), null, null );
 	}
 
 	public getSzerepkodokByNaplo( naploId: string, aktaId: string ): Promise<ValueItem[]> {
 		return this.getCachedItemOrRetrieveFromEnaplo( 'szerepkodokbynaplo', naploId, aktaId );
+	}
+
+	public getSzerepkodokByNaploAndApply( naploId: string, aktaId: string ): Promise<ValueItem[]> {
+		const newSzerepkorokPromise = this.getSzerepkodokByNaplo( naploId, aktaId );
+		const oldSzerepkorokPromise = this.getSzerepkodok();
+		return Promise.all<ValueItem[], ValueItem[]>( [ newSzerepkorokPromise, oldSzerepkorokPromise ] ).then(( results: any[] ) => this.applyNewSzerepkorok( results[ 0 ], results[ 1 ] ) );
+	}
+
+	private applyNewSzerepkorok( newlyLoadedSzerepkodok: ValueItem[], oldSzerepkodok: ValueItem[] ): Promise<ValueItem[]> {
+		oldSzerepkodok = Object.assign( [], oldSzerepkodok );
+		for ( const newSzerepkod of newlyLoadedSzerepkodok ) {
+			let found = false;
+			for ( const oldSzerepkod of oldSzerepkodok ) {
+				if ( newSzerepkod.azonosito == oldSzerepkod.azonosito ) {
+					found = true;
+					break;
+				}
+			}
+			if ( !found ) {
+				oldSzerepkodok.push( newSzerepkod );
+			}
+		}
+		oldSzerepkodok.sort(( o1, o2 ) => o1.azonosito - o2.azonosito );
+		this.addToCache( 'szerepkodok', oldSzerepkodok );
+		return Promise.resolve( oldSzerepkodok );
 	}
 
 	public getSzerepkodok(): Promise<ValueItem[]> {
@@ -50,7 +90,7 @@ export class ValueListsService extends EnaploBaseService {
 	}
 
 	private getCachedItemOrRetrieveFromEnaplo( cachedItemType: string, id1?: string, id2?: string ): Promise<ValueItem[]> {
-		return this.getCachedItemOrRetrieve( cachedItemType, id1, id2, this.retrieveFromEnaplo );
+		return this.getCachedItemOrRetrieve( cachedItemType, id1, id2, ( cacheName ) => this.retrieveFromEnaplo( cacheName, cachedItemType, id1, id2 ) );
 	}
 
 	private retrieveFromEnaplo( cacheName: string, cachedItemType: string, id1: string, id2: string ): Promise<ValueItem[]> {
@@ -67,23 +107,23 @@ export class ValueListsService extends EnaploBaseService {
 	}
 
 	private getCachedItemOrRetrieveFromBackend( cachedItemType: string ): Promise<ValueItem[]> {
-		return this.getCachedItemOrRetrieve( cachedItemType, null, null, this.retrieveFromBackend );
+		return this.getCachedItemOrRetrieve( cachedItemType, null, null, ( cacheName ) => this.retrieveFromBackend( cacheName, cachedItemType, null, null ) );
 	}
 
 	private retrieveFromBackend( cacheName: string, cachedItemType: string, id1: string, id2: string ): Promise<ValueItem[]> {
 		return this.httpGetBackend( `/${ cachedItemType }` )
 			.toPromise()
-			.then( response => this.receivedResponse( response, cacheName ) )
+			.then( response => this.receivedJsonResponse( response, cacheName ) )
 			.catch( error => this.handleError( error, null ) );
 	}
 
-	private getCachedItemOrRetrieve( cachedItemType: string, id1: string, id2: string, retriever: ( cacheName: string, cachedItemType: string, id1: string, id2: string ) => Promise<ValueItem[]> ): Promise<ValueItem[]> {
+	private getCachedItemOrRetrieve( cachedItemType: string, id1: string, id2: string, retriever: ( cacheName: string ) => Promise<ValueItem[]> ): Promise<ValueItem[]> {
 		const cacheName = this.getCacheName( cachedItemType, id1, id2 );
 		const cachedItems = this.cache[ cacheName ];
 		if ( cachedItems !== undefined ) {
-			return cachedItems;
+			return Promise.resolve( cachedItems );
 		}
-		return retriever( cacheName, cachedItemType, id1, id2 );
+		return retriever( cacheName );
 	}
 
 	private getCacheName( cachedItemType: string, id1?: string, id2?: string ): string {
@@ -96,10 +136,21 @@ export class ValueListsService extends EnaploBaseService {
 		return id == null || id == undefined ? '' : id;
 	}
 
-	private receivedResponse( response: Response, cacheName: string ): ValueItem[] {
+	private receivedResponse( response: Response, cacheName: string ): Promise<ValueItem[]> {
 		const items = new ValueListParser().setData( response.text() ).parse();
+		this.addToCache( cacheName, items );
+		return Promise.resolve( items );
+	}
+
+	private receivedJsonResponse( response: Response, cacheName: string ): Promise<ValueItem[]> {
+		const items = JSON.parse( response.text() );
+		this.addToCache( cacheName, items );
+		return Promise.resolve( items );
+	}
+
+	private addToCache( cacheName: string, items: ValueItem[] ): void {
 		this.cache[ cacheName ] = items;
-		return items;
+		this.localStorageService.setItem( this.getComponentName(), null, this.cache );
 	}
 
 }

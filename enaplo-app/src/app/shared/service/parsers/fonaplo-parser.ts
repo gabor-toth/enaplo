@@ -62,7 +62,7 @@ class FonaploCollector implements Handler {
 				this.items.push( this.parent );
 			} else {
 				this.item = new Alnaplo();
-				this.parent.alnaplok.push( this.item );
+				this.parent.naplok.push( this.item );
 			}
 			const ids = attributes.azon.split( '|' );
 			this.item.naplosorszam = ids[ 0 ];
@@ -108,6 +108,7 @@ class FonaploCollector implements Handler {
 		this.item.nev = matches[ index++ ];
 
 		for ( const role of roles.split( ', ' ) ) {
+			// TODO remove "(Nem értelmezett)"
 			this.item.szerepkorok.push( new Szerepkor( role ) );
 		}
 

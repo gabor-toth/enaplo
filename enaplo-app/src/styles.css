@@ -62,3 +62,35 @@ mat-row.mat-row:hover {
 .align-top, .mat-raised-button.align-top {
 	vertical-align: top;
 }
+
+/* Overrides for the lists */
+
+.naplo-list .mat-expansion-panel {
+    margin-top: 2px;
+    margin-left: 1px;
+    margin-bottom: 3px;
+}
+
+.naplo-list :host ::ng-deep .mat-expansion-panel-body {
+    margin: 0px 0px 0px 24px;
+}
+
+.naplo-list .mat-expansion-panel-header-description {
+    flex-grow: 0.2;
+}
+
+.naplo-list .mat-expansion-panel:hover {
+	/* from .mat-tab-nav-bar.mat-primary .mat-tab-link:focus */
+	/*background-color: rgba(209,196,233,.3);*/
+}
+
+.naplo-list .mat-expansion-panel-header-title, 
+.naplo-list .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.naplo-list .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+

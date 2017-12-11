@@ -8,13 +8,21 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { AllMaterialModule } from './common/module/material.module';
-import { NaploComponent } from './naplo/naplo.component';
+import { LocalStorageService } from './common/service/local-storage.service';
+import { NaplokComponent } from './naplok/naplok.component';
 import { NaploService } from './shared/service/naplo.service';
+import { ValueListsService } from './shared/service/value-lists.service';
+import { BeallitasokComponent } from './beallitasok/beallitasok.component';
+import { TeendokComponent } from './teendok/teendok.component';
+import { SzerepkorokComponent } from './szerepkorok/szerepkorok.component';
 
 @NgModule( {
 	declarations: [
 		AppComponent,
-		NaploComponent
+		NaplokComponent,
+		BeallitasokComponent,
+		TeendokComponent,
+		SzerepkorokComponent
 	],
 	imports: [
 		BrowserModule,
@@ -25,7 +33,7 @@ import { NaploService } from './shared/service/naplo.service';
 		HttpModule,
 		AppRoutingModule,
 	],
-	providers: [ NaploService ],
+	providers: [ NaploService, ValueListsService, LocalStorageService ],
 	bootstrap: [ AppComponent ]
 } )
 export class AppModule { }

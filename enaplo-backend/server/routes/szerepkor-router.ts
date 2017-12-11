@@ -13,12 +13,12 @@ export class RouterSzerepkor extends BaseDataRouter {
 	}
 
 	register( router: Router ): void {
-		router.get( '/api/szerepkorok', ( request: Request, response: Response, next: NextFunction ) => {
+		router.get( '/api/szerepkodok', ( request: Request, response: Response, next: NextFunction ) => {
 			const data = this.datastore.getAllData();
 			response.json( data );
 		} );
 
-		router.get( '/api/szerepkorok/:id', ( request: Request, response: Response, next: NextFunction ) => {
+		router.get( '/api/szerepkodok/:id', ( request: Request, response: Response, next: NextFunction ) => {
 			const id = request.params.id;
 			if ( !this.checkParameter( response, 'id', id ) ) {
 				return;
@@ -34,7 +34,7 @@ export class RouterSzerepkor extends BaseDataRouter {
 			} );
 		} );
 
-		router.put( '/api/szerepkorok/:id', ( request: Request, response: Response, next: NextFunction ) => {
+		router.put( '/api/szerepkodok/:id', ( request: Request, response: Response, next: NextFunction ) => {
 			const id = request.params.id;
 			if ( !this.checkParameter( response, 'id', id ) ) {
 				return;

@@ -7,12 +7,12 @@ import { NaploService } from '../shared/service/naplo.service';
 
 @Component( {
 	selector: 'app-enaplo',
-	templateUrl: './naplo.component.html',
-	styleUrls: [ './naplo.component.css' ]
+	templateUrl: './naplok.component.html',
+	styleUrls: [ './naplok.component.css' ]
 } )
-export class NaploComponent extends BaseComponent implements OnInit {
-	readonly nameOfMapClosedNaplos = 'mapOfClosedNaplos';
-	readonly nameOfMapOfHiddenNaplos = 'mapOfHiddenNaplos';
+export class NaplokComponent extends BaseComponent implements OnInit {
+	readonly nameOfMapClosedNaplok = 'mapOfClosedNaplok';
+	readonly nameOfMapOfHiddenNaplok = 'mapOfHiddenNaplok';
 
 	naplok: Naplo[];
 	displayedColumns = [ 'azonosito', 'nev', 'iranyitoszam', 'telepules'
@@ -21,7 +21,7 @@ export class NaploComponent extends BaseComponent implements OnInit {
 	mapOfClosedNaplos = {};
 	mapOfHiddenNaplos = {};
 
-	constructor( private enaploService: NaploService, private router: Router ) {
+	constructor( private enaploService: NaploService ) {
 		super();
 		this.loadSettings();
 	}
@@ -35,23 +35,26 @@ export class NaploComponent extends BaseComponent implements OnInit {
 	}
 
 	private loadSettings(): void {
-		this.mapOfClosedNaplos = this.loadSettingsWithDefault( this.nameOfMapClosedNaplos, {} );
-		this.mapOfHiddenNaplos = this.loadSettingsWithDefault( this.nameOfMapOfHiddenNaplos, {} );
+		this.mapOfClosedNaplos = this.loadSettingsWithDefault( this.nameOfMapClosedNaplok, {} );
+		this.mapOfHiddenNaplos = this.loadSettingsWithDefault( this.nameOfMapOfHiddenNaplok, {} );
 	}
 
 	toggleNaplo( naploId: number, opened: boolean ): void {
-		this.setOrClearValueInSettingsMap( this.mapOfClosedNaplos, naploId, opened ? undefined : true, this.nameOfMapClosedNaplos );
+		this.setOrClearValueInSettingsMap( this.mapOfClosedNaplos, naploId, opened ? undefined : true, this.nameOfMapClosedNaplok );
 	}
 
-	refreshNaplok( forceReload: any ): void {
+	refreshNaplok( forceReload: boolean ): void {
 		this.enaploService
 			.getNaplok( forceReload, this )
-			.then( naplok => this.onEnaploLoaded( naplok ) )
+			.then( naplok => this.onEnaploLoaded( naplok, forceReload ) )
 			.catch( error => this.onServiceError( error ) );
 	}
 
-	onEnaploLoaded( naplok: Naplo[] ): void {
+	onEnaploLoaded( naplok: Naplo[], forceReload: boolean ): void {
 		this.naplok = naplok;
+		if ( forceReload ) {
+			this.showActionFeedback( 'Naplók frissítve' );
+		}
 	}
 
 	onClickSettings( event: any, naploSorszam: string ): void {

@@ -5,8 +5,10 @@ import { MatSnackBar } from '@angular/material';
 import { ServiceLocator } from '../../common/service/service-locator';
 import { ServiceCallStateObserver } from '../service/service-call-state-callback';
 import { environment } from '../../../environments/environment';
+import { LocalStorageService } from '../service/local-storage.service';
 
 export abstract class BaseComponent implements ServiceCallStateObserver {
+	protected localStorageService: LocalStorageService;
 	loading = false;
 	progressType = 'indeterminate';
 	progressValue = 0;
@@ -16,6 +18,7 @@ export abstract class BaseComponent implements ServiceCallStateObserver {
 
 	constructor() {
 		this.snackBar = ServiceLocator.injector.get( MatSnackBar );
+		this.localStorageService = ServiceLocator.injector.get( LocalStorageService );
 	}
 
 	protected abstract getComponentName(): string;
@@ -24,7 +27,7 @@ export abstract class BaseComponent implements ServiceCallStateObserver {
 		this.loadError = null;
 		this.progressType = 'indeterminate';
 		this.progressValue = 0;
-		this.loadTimer = setTimeout( () => this.loading = true, 300 );
+		this.loadTimer = setTimeout(() => this.loading = true, 300 );
 	}
 
 	onServiceCallProgress( percent: number ): void {
@@ -38,7 +41,7 @@ export abstract class BaseComponent implements ServiceCallStateObserver {
 		this.loadTimer = null;
 	}
 
-	onServiceError( error: number ): void {
+	onServiceError( error: any ): void {
 		let message: string;
 		let actionLabel: string;
 		let action;
@@ -56,24 +59,28 @@ export abstract class BaseComponent implements ServiceCallStateObserver {
 				break;
 			default:
 				message = 'Ismeretlen hiba';
+				if ( error instanceof TypeError ) {
+					console.error( error );
+				} else {
+					console.error( 'Unknown error:' + error );
+				}
 				break;
 		}
 		// { extraClasses: [ 'alert-danger' ] }
 		const snackBarRef = this.snackBar.open( message, actionLabel, { politeness: 'assertive' } );
 		if ( actionLabel !== undefined && action !== undefined ) {
-			snackBarRef.onAction().subscribe( () => {
+			snackBarRef.onAction().subscribe(() => {
 				action();
 			} );
 		}
 	}
 
-	protected getLocalStorageName( propertyName: string ): string {
-		return environment.localStorageName + '.' + this.getComponentName() + '.' + propertyName;
+	protected showActionFeedback( message: string ): void {
+		this.snackBar.open( message, null, { duration: environment.snackBarDefaultDuration } );
 	}
 
 	protected loadSettingsWithDefault( propertyName: string, defaultValue: any ): any {
-		const value = JSON.parse( localStorage.getItem( this.getLocalStorageName( propertyName ) ) );
-		return value !== null ? value : defaultValue;
+		return this.localStorageService.getItemWithDefault( this.getComponentName(), propertyName, defaultValue );
 	}
 
 	protected setOrClearValueInSettingsMap( mapOfValues: any, key: any, value: any, propertyName?: string ): void {
@@ -83,7 +90,7 @@ export abstract class BaseComponent implements ServiceCallStateObserver {
 			mapOfValues[ key ] = value;
 		}
 		if ( propertyName !== undefined ) {
-			localStorage.setItem( this.getLocalStorageName( propertyName ), JSON.stringify( mapOfValues ) );
+			this.localStorageService.setItem( this.getComponentName(), propertyName, mapOfValues );
 		}
 	}
 }

@@ -16,7 +16,9 @@ export abstract class BaseService {
 	}
 
 	protected handleError( error: any, stateCallback: ServiceCallStateObserver ): Promise<any> {
-		stateCallback.onServiceCallEnd();
+		if ( stateCallback !== null ) {
+			stateCallback.onServiceCallEnd();
+		}
 		let errorCode = 0;
 		if ( error.type == 2 ) {
 			switch ( error.status ) {

@@ -1,0 +1,11 @@
+.szerepkorok {
+	margin-bottom: 8px;
+}
+
+.szerepkor {
+	display: inline-block;
+}
+
+.szerepkor:not(:last-child):after {
+	content: ', ';
+}

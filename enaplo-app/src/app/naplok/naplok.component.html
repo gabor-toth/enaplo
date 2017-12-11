@@ -1,4 +1,4 @@
-<div class="naplo-component">
+<div class="naplo-component naplo-list">
 	<div class="progress-bar-holder">
 		<mat-progress-bar [mode]="progressType" [value]="progressValue" *ngIf="loading"></mat-progress-bar>
 	</div>
@@ -7,7 +7,7 @@
 	</div>
 
 	<mat-expansion-panel *ngFor="let naplo of naplok" [expanded]="!mapOfClosedNaplos[naplo.sorszam]" (closed)="toggleNaplo(naplo.sorszam,false)" (opened)="toggleNaplo(naplo.sorszam,true)">
-		<div *ngIf="naplo.fonaplok.length == 0" class="">
+		<div *ngIf="naplo.naplok.length == 0" class="">
 			Nincs főnapló.
 		</div>
    		<mat-expansion-panel-header>
@@ -20,13 +20,13 @@
    		</mat-expansion-panel-header>
 
 		<div *ngIf="naplo['szerepkorok'].length > 0" class='szerepkorok'>
-			Szerepkörök: <div class='szerepkor' *ngFor="let szerepkor of naplo['szerepkorok']">{{szerepkor['azonosito']}}</div>
+			Szerepkörök: <div class='szerepkor' *ngFor="let szerepkor of naplo.szerepkorok">{{szerepkor['nev']}}</div>
 		</div>
 		
-  		<mat-expansion-panel *ngFor="let fonaplo of naplo.fonaplok" [expanded]="!mapOfClosedNaplos[fonaplo['sorszam']]" (closed)="toggleNaplo(fonaplo.sorszam,false)" (opened)="toggleNaplo(fonaplo.sorszam,true)">
+  		<mat-expansion-panel *ngFor="let fonaplo of naplo.naplok" [expanded]="!mapOfClosedNaplos[fonaplo.sorszam]" (closed)="toggleNaplo(fonaplo.sorszam,false)" (opened)="toggleNaplo(fonaplo.sorszam,true)">
 			<mat-expansion-panel-header>
 	  			<mat-panel-title>
-				{{fonaplo['originalString']}}
+				{{fonaplo.originalString}}
 	  			</mat-panel-title>
 				<mat-panel-description>
 					&nbsp;<mat-icon (click)="onClickSettings($event,naplo.sorszam)">settings</mat-icon>
@@ -34,7 +34,7 @@
 			</mat-expansion-panel-header>
 			
 			<div *ngIf="fonaplo['szerepkorok'].length > 0" class='szerepkorok'>
-				Szerepkörök: <div class='szerepkor' *ngFor="let szerepkor of fonaplo['szerepkorok']">{{szerepkor['azonosito']}}</div>
+				Szerepkörök: <div class='szerepkor' *ngFor="let szerepkor of fonaplo['szerepkorok']">{{szerepkor['nev']}}</div>
 			</div>
 
 	  		<mat-expansion-panel *ngFor="let alnaplo of fonaplo['alnaplok']" [expanded]="!mapOfClosedNaplos[alnaplo['sorszam']]" (closed)="toggleNaplo(alnaplo.sorszam,false)" (opened)="toggleNaplo(alnaplo.sorszam,true)">
@@ -48,7 +48,7 @@
 				</mat-expansion-panel-header>
 				
 				<div *ngIf="alnaplo['szerepkorok'].length > 0" class='szerepkorok'>
-					Szerepkörök: <div class='szerepkor' *ngFor="let szerepkor of alnaplo['szerepkorok']">{{szerepkor['azonosito']}}</div>
+					Szerepkörök: <div class='szerepkor' *ngFor="let szerepkor of alnaplo['szerepkorok']">{{szerepkor['nev']}}</div>
 				</div>
 			</mat-expansion-panel>
 		</mat-expansion-panel>
