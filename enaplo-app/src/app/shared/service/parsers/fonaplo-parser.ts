@@ -43,6 +43,8 @@ insertNaploItems( 'enaploAktaFa', '23129', '
 */
 
 class FonaploCollector implements Handler {
+	private static NEM_ERTELMEZETT = ' (Nem értelmezett)';
+
 	private items: Array<Fonaplo>;
 	private parent: Fonaplo;
 	private item: NaploBase;
@@ -107,9 +109,14 @@ class FonaploCollector implements Handler {
 		this.item.azonosito = matches[ index++ ];
 		this.item.nev = matches[ index++ ];
 
-		for ( const role of roles.split( ', ' ) ) {
-			// TODO remove "(Nem értelmezett)"
-			this.item.szerepkorok.push( new Szerepkor( role ) );
+		for ( let role of roles.split( ', ' ) ) {
+			let szakag = null;
+			const startParenthesis = role.indexOf( ' (' );
+			if ( startParenthesis >= 0 ) {
+				szakag = role.substring( startParenthesis + 2, role.length - 1 );
+				role = role.substring( 0, startParenthesis );
+			}
+			this.item.szerepkorok.push( new Szerepkor( role, szakag ) );
 		}
 
 		this.item = null;

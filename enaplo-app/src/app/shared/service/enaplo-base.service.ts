@@ -25,7 +25,7 @@ export abstract class EnaploBaseService extends BaseService {
 	protected httpGetApiWithoutHtmlId( urlPart: string ): Observable<Response> {
 		const time = Date.now();
 		return this.http
-			.get( `${ this.apiUrl }${ urlPart }&&_=${ time }`, { headers: this.getHeaders } );
+			.get( `${ this.apiUrl }${ urlPart }&_=${ time }`, { headers: this.getHeaders } );
 	}
 
 	protected httpGetBackend( urlPart: string ): Observable<Response> {

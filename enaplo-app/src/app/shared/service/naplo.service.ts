@@ -40,7 +40,7 @@ class FonaploFetcher {
 
 	private receivedResponse( response: Response ): Promise<Naplo[]> {
 		const fonaplok = new FonaploParser().setData( response.text() ).parse();
-		this.naplok[ this.currentNaploIndex ].naplok = fonaplok;
+		this.naplok[ this.currentNaploIndex ].setNaplok( fonaplok );
 		this.currentNaploIndex++;
 		return this.process();
 	}
@@ -89,7 +89,7 @@ export class NaploService extends EnaploBaseService {
 		stateObserver.onServiceCallStart();
 		return this.httpGetApi( '?method=naplofa_load&id=%23page_enaplok' )
 			.toPromise()
-			.then( response => this.receivedResponse( response, stateObserver ) )
+			.then( response => this.receivedNaplokResponse( response, stateObserver ) )
 			.catch( error => this.handleError( error, stateObserver ) );
 	}
 
@@ -128,7 +128,7 @@ export class NaploService extends EnaploBaseService {
 			}
 			if ( wasMissingSzerepkod ) {
 				// TODO avoid endless loop
-				return this.valueListsService.getSzerepkodokByNaploAndApply( naplo.azonosito, naplo.sorszam ).then( newSzerepkodok => this.loadedSzerepkorok( newSzerepkodok ) );
+				return this.valueListsService.getSzerepkodokByNaploAndApply( naplo.aktaId, naplo.sorszam ).then( newSzerepkodok => this.loadedSzerepkorok( newSzerepkodok ) );
 			}
 			if ( naplo.naplok.length != 0 ) {
 				const checkResult = this.checkSzerepkorok( naplo.naplok, szerepkodok );
@@ -176,9 +176,9 @@ export class NaploService extends EnaploBaseService {
 		return found;
 	}
 
-	private receivedResponse( response: Response, stateObserver: ServiceCallStateObserver ): Promise<Naplo[]> {
-		const naplok = new NaploParser().setData( response.text() ).parse();
-		return new FonaploFetcher( this, stateObserver, naplok ).process();
+	private receivedNaplokResponse( response: Response, stateObserver: ServiceCallStateObserver ): Promise<Naplo[]> {
+		const naploSkeletons = new NaploParser().setData( response.text() ).parse();
+		return new FonaploFetcher( this, stateObserver, naploSkeletons ).process();
 	}
 
 	getFonaplok( naploId: string ): Promise<Response> {

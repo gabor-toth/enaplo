@@ -53,7 +53,7 @@ export class ValueListsService extends EnaploBaseService {
 			}
 		}
 		oldSzerepkodok.sort(( o1, o2 ) => o1.azonosito - o2.azonosito );
-		this.addToCache( 'szerepkodok', oldSzerepkodok );
+		this.addToCache( this.getCacheName( 'szerepkodok', null, null ), oldSzerepkodok );
 		return Promise.resolve( oldSzerepkodok );
 	}
 

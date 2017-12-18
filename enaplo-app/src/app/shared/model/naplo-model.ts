@@ -1,3 +1,4 @@
+import { forEachChild } from 'typescript';
 export class Szemely {
 	public _type: string;
 	public nev: string;
@@ -13,10 +14,13 @@ export class Szerepkor {
 	public id: string;
 	public azonosito: string;
 	public nev: string;
+	public szakag: string;
+	public szakagAzonosito: string;
 
-	constructor( nev?: string ) {
+	constructor( nev?: string, szakag?: string ) {
 		this._type = 'Szerepkor';
 		this.nev = nev;
+		this.szakag = szakag;
 	}
 }
 
@@ -24,6 +28,7 @@ export abstract class NaploBase {
 	public _type: string;
 	public sorszam: string;
 	public azonosito: string;
+	public aktaId: string;
 	public nev: string;
 	public naplosorszam: string;
 	public szerepkorok: Array<Szerepkor>;
@@ -37,6 +42,14 @@ export abstract class NaploBase {
 
 	abstract get originalString(): string;
 
+	protected applyAktaIdOnMeAndChildren( aktaId: string ): void {
+		this.aktaId = aktaId;
+		if ( this.naplok != null ) {
+			for ( const child of this.naplok ) {
+				child.applyAktaIdOnMeAndChildren( aktaId );
+			}
+		}
+	}
 }
 
 export class Naplo extends NaploBase {
@@ -45,9 +58,13 @@ export class Naplo extends NaploBase {
 	public helyrajziszam: string;
 	public tulajdonos: Szemely;
 
-
 	constructor() {
 		super( 'Naplo' );
+	}
+
+	public setNaplok( naplok: Array<NaploBase> ): void {
+		this.naplok = naplok;
+		this.applyAktaIdOnMeAndChildren( this.sorszam );
 	}
 
 	public get originalString(): string {
