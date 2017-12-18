@@ -10,19 +10,19 @@ export class RouterEnaplo extends BaseRouter {
 		} );
 
 		router.post( '/api/enaplok', ( request: Request, response: Response, next: NextFunction ) => {
-			this.parseBodyAndSendAsResponse( request, response, new NaploParser() );
+			// this.parseBodyAndSendAsResponse( request, response, new NaploParser() );
 		} );
 
 		router.get( '/api/enaplok/:id', ( request: Request, response: Response, next: NextFunction ) => {
-			const id = request.params.id;
-			if ( !this.checkParameter( response, 'id', id ) ) {
-				return;
-			}
-			this.proxy( response, '/ajax?method=get_naplo_items&parentid=enaploAktaFa&aktaid=${naplosorszam}&htmlid=${htmlid}&_=${time}' );
+			// 			const id = request.params.id;
+			// 			if ( !this.checkParameter( response, 'id', id ) ) {
+			// 				return;
+			// 			}
+			// 			this.proxy( response, '/ajax?method=get_naplo_items&parentid=enaploAktaFa&aktaid=${naplosorszam}&htmlid=${htmlid}&_=${time}' );
 		} );
 
 		router.post( '/api/enaplok/:id', ( request: Request, response: Response, next: NextFunction ) => {
-			this.parseBodyAndSendAsResponse( request, response, new FonaploParser() );
+			// 			this.parseBodyAndSendAsResponse( request, response, new FonaploParser() );
 		} );
 	}
 }

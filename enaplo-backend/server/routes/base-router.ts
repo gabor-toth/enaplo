@@ -10,47 +10,8 @@ export class BaseRouter {
 		BaseRouter.urlBase = urlBase;
 	}
 
-	protected checkParameter( response: Response, parameterName: string, parameterValue: any ): boolean {
-		if ( parameterValue === undefined ) {
-			this.badRequest( response, 'Missing parameter ' + parameterName );
-			return false;
-		}
-		return true;
-	}
-
-	protected badRequest( response: Response, message: string ): void {
-		response
-			.status( 400 )
-			.send( message );
-	}
-
-	protected noSuchElement( response: Response, message: string ): void {
-		response
-			.status( 404 )
-			.send( message );
-	}
-
 	protected proxy( response: Response, urlPart: string ): void {
 		response.json( ApiResponse.proxy( config.targetUrlBase + urlPart ) );
 	}
 
-	protected parseBodyAndSendAsResponse( request: Request, response: Response, parser: BaseParser ): void {
-		const data = request.body;
-		if ( !this.checkParameter( response, 'body', data ) ) {
-			return;
-		}
-
-		const parsedData = parser.setData( data ).parse();
-		response.json( ApiResponse.data( parsedData ) );
-	}
-
-	protected getParsedJsonBody( request: Request, response: Response ): any {
-		const data = request.body;
-		if ( !this.checkParameter( response, 'body', data ) ) {
-			return undefined;
-		}
-
-		const parsedData = JSON.parse( data );
-		return parsedData;
-	}
 }
