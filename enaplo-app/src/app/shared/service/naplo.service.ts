@@ -12,42 +12,51 @@ import { NaploParser } from './parsers/naplo-parser';
 import { ValueListsService } from './value-lists.service';
 
 class FonaploFetcher {
-	private service: NaploService;
-	private stateObserver: ServiceCallStateObserver;
+	private naploService: NaploService;
+	private stateObserverCallback: ServiceCallStateObserver;
 	private naplok: Naplo[];
-	private position: number;
+	private currentNaploIndex: number;
 
 	constructor( service: NaploService, stateObserver: ServiceCallStateObserver, naplok: Naplo[] ) {
-		this.service = service;
-		this.stateObserver = stateObserver;
+		this.naploService = service;
+		this.stateObserverCallback = stateObserver;
 		this.naplok = naplok;
-		this.position = 0;
+		this.currentNaploIndex = 0;
 	}
 
-	fetchNext(): Promise<Naplo[]> {
-		if ( this.position == this.naplok.length ) {
-			this.stateObserver.onServiceCallEnd();
-			this.service.cachedNaplok = this.naplok;
-			return Promise.resolve( this.naplok );
+	process(): Promise<Naplo[]> {
+		if ( this.currentNaploIndex == this.naplok.length ) {
+			return this.receivedLastResponse();
+		} else {
+			return this.fetchNext();
 		}
-		this.stateObserver.onServiceCallProgress( 100 * ( this.position + 1 ) / ( this.naplok.length + 1 ) );
-		const naploSorszam = this.naplok[ this.position ].sorszam;
-		return this.service.getFonaplok( naploSorszam ).then( response => this.receivedResponse( response ) );
+	}
+
+	private fetchNext(): Promise<Naplo[]> {
+		this.stateObserverCallback.onServiceCallProgress( 100 * ( this.currentNaploIndex + 1 ) / ( this.naplok.length + 1 ) );
+		const naploSorszam = this.naplok[ this.currentNaploIndex ].sorszam;
+		return this.naploService.getFonaplok( naploSorszam ).then( response => this.receivedResponse( response ) );
 	}
 
 	private receivedResponse( response: Response ): Promise<Naplo[]> {
 		const fonaplok = new FonaploParser().setData( response.text() ).parse();
-		this.naplok[ this.position ].naplok = fonaplok;
-		this.position++;
-		return this.fetchNext();
+		this.naplok[ this.currentNaploIndex ].naplok = fonaplok;
+		this.currentNaploIndex++;
+		return this.process();
+	}
+
+	private receivedLastResponse(): Promise<Naplo[]> {
+		this.stateObserverCallback.onServiceCallEnd();
+		this.naploService.cachedNaplok = this.naplok;
+		return Promise.resolve( this.naplok );
 	}
 
 }
 
 export class SzerepkorNaplok {
-	azonosito: number;
-	nev: string;
-	naplok: NaploBase[];
+	public azonosito: number;
+	public nev: string;
+	public naplok: NaploBase[];
 
 	constructor( valueItem: ValueItem ) {
 		this.azonosito = valueItem.azonosito;
@@ -59,7 +68,7 @@ export class SzerepkorNaplok {
 @Injectable()
 export class NaploService extends EnaploBaseService {
 	cachedNaplok: Naplo[];
-	cachedNaplokBySzerepkor: SzerepkorNaplok[];
+	private cachedNaplokBySzerepkor: SzerepkorNaplok[];
 
 	constructor( private valueListsService: ValueListsService ) {
 		super();
@@ -93,7 +102,9 @@ export class NaploService extends EnaploBaseService {
 	}
 
 	private loadSzerepkorok(): Promise<SzerepkorNaplok[]> {
-		return this.valueListsService.getSzerepkodok().then( szerepkodok => this.loadedSzerepkorok( szerepkodok ) ).then( szerepkodok => this.gotAllSzerepkorok( szerepkodok ) );
+		return this.valueListsService.getSzerepkodok()
+			.then( szerepkodok => this.loadedSzerepkorok( szerepkodok ) )
+			.then( szerepkodok => this.gotAllSzerepkorok( szerepkodok ) );
 	}
 
 	private loadedSzerepkorok( szerepkodok: ValueItem[] ): Promise<ValueItem[]> {
@@ -167,7 +178,7 @@ export class NaploService extends EnaploBaseService {
 
 	private receivedResponse( response: Response, stateObserver: ServiceCallStateObserver ): Promise<Naplo[]> {
 		const naplok = new NaploParser().setData( response.text() ).parse();
-		return new FonaploFetcher( this, stateObserver, naplok ).fetchNext();
+		return new FonaploFetcher( this, stateObserver, naplok ).process();
 	}
 
 	getFonaplok( naploId: string ): Promise<Response> {
