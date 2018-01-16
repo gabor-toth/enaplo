@@ -40,7 +40,7 @@ export class NaplokComponent extends BaseComponent implements OnInit {
 	}
 
 	toggleNaplo( naploId: number, opened: boolean ): void {
-		this.setOrClearValueInSettingsMap( this.mapOfClosedNaplos, naploId, opened ? undefined : true, this.nameOfMapClosedNaplok );
+		this.setOrClearValueInSettingsMap( this.nameOfMapClosedNaplok, this.mapOfClosedNaplos, naploId, opened ? undefined : true );
 	}
 
 	refreshNaplok( forceReload: boolean ): void {

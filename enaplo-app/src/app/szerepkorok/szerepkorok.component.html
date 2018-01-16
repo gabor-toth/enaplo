@@ -4,62 +4,78 @@
 	</div>
 	<div>
 		<button type="button" (click)="refreshNaplok(true)" mat-raised-button class="align-top">Frissítés</button>
+		<mat-button-toggle-group #selectionType="matButtonToggleGroup" (change)="selectionTypeChanged(selectionType.value)" [value]="selectedType">
+		  	<mat-button-toggle value="active">
+		    	Aktívak
+		  	</mat-button-toggle>
+		  	<mat-button-toggle value="all">
+			    Mind
+		  	</mat-button-toggle>
+		</mat-button-toggle-group>
 	</div>
 
-	<mat-expansion-panel *ngFor="let entry of szerepkorNaplok" [expanded]="!mapOfClosedSzerepkorok[entry.azonosito]" (closed)="toggleSzerepkor(entry.azonosito,false)" (opened)="toggleSzerepkor(entry.azonosito,true)">
-   		<mat-expansion-panel-header>
-	 		<mat-panel-title>
-	   		{{entry.nev}}
-	 		</mat-panel-title>
-	 		<!-- 
-			<mat-panel-description>
-				&nbsp;<mat-icon (click)="onClickSettings($event,entry.azonosito)">settings</mat-icon>
-			</mat-panel-description>
-	 		 -->
-   		</mat-expansion-panel-header>
-
-		<div *ngIf="entry.naplok.length == 0" class="">
-			Nincs hozzárendelt napló.
-		</div>
-
-		<div class='' *ngFor="let naplo of entry.naplok">
-			{{naplo.azonosito}}
-		</div>
-		
-		<!-- 
-		<div *ngIf="naplo['szerepkorok'].length > 0" class='szerepkorok'>
-			Szerepkörök: <div class='szerepkor' *ngFor="let szerepkor of naplo['szerepkorok']">{{szerepkor['azonosito']}}</div>
-		</div>
-		
-  		<mat-expansion-panel *ngFor="let fonaplo of naplo.fonaplok" [expanded]="!mapOfClosedSzerepkorok[fonaplo['sorszam']]" (closed)="toggleSzerepkor(fonaplo.sorszam,false)" (opened)="toggleSzerepkor(fonaplo.sorszam,true)">
-			<mat-expansion-panel-header>
-	  			<mat-panel-title>
-				{{fonaplo['originalString']}}
-	  			</mat-panel-title>
+	<div>
+		<mat-expansion-panel 
+				*ngFor="let entry of szerepkorNaplok; let i = index" 
+				[expanded]="!mapOfSzerepkorok[entry.azonosito]?.closed" (closed)="toggleSzerepkor(entry.azonosito,false)" (opened)="toggleSzerepkor(entry.azonosito,true)"
+				draggable="true" (dragenter)="dragHandler.dragenter($event)" (dragstart)="dragHandler.dragstart($event)" (dragend)="dragHandler.dragend($event)"
+				[attr.data-index]="i" [attr.data-id]="entry.getId()"
+		>
+			<!--   [disableRipple]="true" -->
+	   		<mat-expansion-panel-header>
+		 		<mat-panel-title>
+		   		{{entry.nev}}
+		 		</mat-panel-title>
+		 		<!-- 
 				<mat-panel-description>
-					&nbsp;<mat-icon (click)="onClickSettings($event,naplo.sorszam)">settings</mat-icon>
+					&nbsp;<mat-icon (click)="onClickSettings($event,entry.azonosito)">settings</mat-icon>
 				</mat-panel-description>
-			</mat-expansion-panel-header>
-			
-			<div *ngIf="fonaplo['szerepkorok'].length > 0" class='szerepkorok'>
-				Szerepkörök: <div class='szerepkor' *ngFor="let szerepkor of fonaplo['szerepkorok']">{{szerepkor['azonosito']}}</div>
+		 		 -->
+	   		</mat-expansion-panel-header>
+	
+			<div *ngIf="entry.naplok.length == 0" class="">
+				Nincs hozzárendelt napló.
 			</div>
-
-	  		<mat-expansion-panel *ngFor="let alnaplo of fonaplo['alnaplok']" [expanded]="!mapOfClosedSzerepkorok[alnaplo['sorszam']]" (closed)="toggleSzerepkor(alnaplo.sorszam,false)" (opened)="toggleSzerepkor(alnaplo.sorszam,true)">
+	
+			<div class='' *ngFor="let naplo of entry.naplok">
+				{{naplo.azonosito}}
+			</div>
+			
+			<!-- 
+			<div *ngIf="naplo['szerepkorok'].length > 0" class='szerepkorok'>
+				Szerepkörök: <div class='szerepkor' *ngFor="let szerepkor of naplo['szerepkorok']">{{szerepkor['azonosito']}}</div>
+			</div>
+			
+	  		<mat-expansion-panel *ngFor="let fonaplo of naplo.fonaplok" [expanded]="!mapOfSzerepkorok[fonaplo['sorszam']]" (closed)="toggleSzerepkor(fonaplo.sorszam,false)" (opened)="toggleSzerepkor(fonaplo.sorszam,true)">
 				<mat-expansion-panel-header>
 		  			<mat-panel-title>
-					{{alnaplo['originalString']}}
+					{{fonaplo['originalString']}}
 		  			</mat-panel-title>
 					<mat-panel-description>
 						&nbsp;<mat-icon (click)="onClickSettings($event,naplo.sorszam)">settings</mat-icon>
 					</mat-panel-description>
 				</mat-expansion-panel-header>
 				
-				<div *ngIf="alnaplo['szerepkorok'].length > 0" class='szerepkorok'>
-					Szerepkörök: <div class='szerepkor' *ngFor="let szerepkor of alnaplo['szerepkorok']">{{szerepkor['azonosito']}}</div>
+				<div *ngIf="fonaplo['szerepkorok'].length > 0" class='szerepkorok'>
+					Szerepkörök: <div class='szerepkor' *ngFor="let szerepkor of fonaplo['szerepkorok']">{{szerepkor['azonosito']}}</div>
 				</div>
+	
+		  		<mat-expansion-panel *ngFor="let alnaplo of fonaplo['alnaplok']" [expanded]="!mapOfSzerepkorok[alnaplo['sorszam']]" (closed)="toggleSzerepkor(alnaplo.sorszam,false)" (opened)="toggleSzerepkor(alnaplo.sorszam,true)">
+					<mat-expansion-panel-header>
+			  			<mat-panel-title>
+						{{alnaplo['originalString']}}
+			  			</mat-panel-title>
+						<mat-panel-description>
+							&nbsp;<mat-icon (click)="onClickSettings($event,naplo.sorszam)">settings</mat-icon>
+						</mat-panel-description>
+					</mat-expansion-panel-header>
+					
+					<div *ngIf="alnaplo['szerepkorok'].length > 0" class='szerepkorok'>
+						Szerepkörök: <div class='szerepkor' *ngFor="let szerepkor of alnaplo['szerepkorok']">{{szerepkor['azonosito']}}</div>
+					</div>
+				</mat-expansion-panel>
 			</mat-expansion-panel>
+			 -->
 		</mat-expansion-panel>
-		 -->
-	</mat-expansion-panel>
+	</div>
 </div>

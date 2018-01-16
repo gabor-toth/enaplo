@@ -83,7 +83,7 @@ export abstract class BaseComponent implements ServiceCallStateObserver {
 		return this.localStorageService.getItemWithDefault( this.getComponentName(), propertyName, defaultValue );
 	}
 
-	protected setOrClearValueInSettingsMap( mapOfValues: any, key: any, value: any, propertyName?: string ): void {
+	protected setOrClearValueInSettingsMap( propertyName: string, mapOfValues: any, key: any, value: any ): void {
 		if ( value === undefined ) {
 			delete mapOfValues[ key ];
 		} else {
@@ -92,5 +92,9 @@ export abstract class BaseComponent implements ServiceCallStateObserver {
 		if ( propertyName !== undefined ) {
 			this.localStorageService.setItem( this.getComponentName(), propertyName, mapOfValues );
 		}
+	}
+
+	protected setSetting( propertyName: string, value: any ): void {
+		this.localStorageService.setItem( this.getComponentName(), propertyName, value );
 	}
 }

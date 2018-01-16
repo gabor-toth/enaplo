@@ -66,7 +66,7 @@ mat-row.mat-row:hover {
 /* Overrides for the lists */
 
 .naplo-list .mat-expansion-panel {
-    margin-top: 2px;
+    margin-top: 10px;
     margin-left: 1px;
     margin-bottom: 3px;
 }

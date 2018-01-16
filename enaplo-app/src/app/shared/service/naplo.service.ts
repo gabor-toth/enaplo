@@ -1,3 +1,4 @@
+import { DisplayListItem } from '../../common/component/display.list.item';
 import { Injectable } from '@angular/core';
 import { Headers, Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
@@ -53,7 +54,7 @@ class FonaploFetcher {
 
 }
 
-export class SzerepkorNaplok {
+export class SzerepkorNaplok implements DisplayListItem {
 	public azonosito: number;
 	public nev: string;
 	public naplok: NaploBase[];
@@ -62,6 +63,10 @@ export class SzerepkorNaplok {
 		this.azonosito = valueItem.azonosito;
 		this.nev = valueItem.nev;
 		this.naplok = [];
+	}
+
+	getId(): number {
+		return this.azonosito;
 	}
 }
 
