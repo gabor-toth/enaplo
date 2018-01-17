@@ -2,7 +2,7 @@ import { LocalStorageService } from '../../common/service/local-storage.service'
 import { Injectable, ValueProvider } from '@angular/core';
 import { Response } from '@angular/http';
 
-import { ValueItem } from '../model/value-item';
+import { ValueItem } from '../model/export';
 import { EnaploBaseService } from './enaplo-base.service';
 import { ValueListParser } from './parsers/value-list-parser';
 

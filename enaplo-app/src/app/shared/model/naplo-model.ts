@@ -33,6 +33,8 @@ export abstract class NaploBase {
 	public naplosorszam: string;
 	public szerepkorok: Array<Szerepkor>;
 	public naplok: Array<NaploBase>;
+	public parent: NaploBase;
+	public rootParent: Naplo;
 
 	constructor( _type: string ) {
 		this._type = _type;
@@ -41,12 +43,15 @@ export abstract class NaploBase {
 	}
 
 	abstract get originalString(): string;
+	abstract get display(): string;
 
-	protected applyAktaIdOnMeAndChildren( aktaId: string ): void {
-		this.aktaId = aktaId;
+	protected setParent( rootParent: Naplo, parent: NaploBase ): void {
+		this.aktaId = rootParent.sorszam;
+		this.rootParent = rootParent;
+		this.parent = parent;
 		if ( this.naplok != null ) {
 			for ( const child of this.naplok ) {
-				child.applyAktaIdOnMeAndChildren( aktaId );
+				child.setParent( rootParent, this );
 			}
 		}
 	}
@@ -64,13 +69,19 @@ export class Naplo extends NaploBase {
 
 	public setNaplok( naplok: Array<NaploBase> ): void {
 		this.naplok = naplok;
-		this.applyAktaIdOnMeAndChildren( this.sorszam );
+		this.setParent( this, this );
 	}
 
 	public get originalString(): string {
 		// 2017/340/7 ház2: 1039 Budajenő HRSZ:1234 (Gabtoth72 - 235847809)
 		return this.azonosito + ' ' + this.nev + ': ' + this.iranyitoszam + ' ' + this.telepules +
 			' HRSZ: ' + this.helyrajziszam + ' (' + this.tulajdonos.nev + ' - ' + this.tulajdonos.nuj + ' )';
+	}
+
+	public get display(): string {
+		// 2017/340/7 ház2: 1039 Budajenő HRSZ:1234
+		return this.azonosito + ' ' + this.nev + ': ' + this.iranyitoszam + ' ' + this.telepules +
+			' HRSZ: ' + this.helyrajziszam;
 	}
 }
 
@@ -83,13 +94,24 @@ export class NaploSubBase extends NaploBase {
 	}
 
 	public get originalString(): string {
-		// 2017/340/7 ház2: 1039 Budajenő HRSZ:1234 (Gabtoth72 - 235847809)
 		let s = this.azonosito + ' ' + this.nev;
 		if ( this.cim !== undefined ) {
 			s += ': ' + this.cim;
 		}
 		if ( this.tulajdonos !== undefined ) {
 			s += ' (' + this.tulajdonos.nev + ' - ' + this.tulajdonos.nuj + ' )';
+		}
+		return s;
+	}
+
+	public get display(): string {
+		let s = '';
+		if ( this.parent !== undefined ) {
+			s = this.parent.display + ' - ';
+		}
+		s += this.azonosito + ' ' + this.nev;
+		if ( this.cim !== undefined ) {
+			s += ': ' + this.cim;
 		}
 		return s;
 	}

@@ -16,7 +16,15 @@ export abstract class EnaploBaseService extends BaseService {
 		this.backendUrl = environment.backendServiceUrl;
 	}
 
-	protected httpGetApi( urlPart: string ): Observable<Response> {
+	protected httpGetApi( method: string, parameters: { [ key: string ]: any } ): Observable<Response> {
+		let request = '?method=' + method;
+		for ( const key of Object.keys( parameters ) ) {
+			request += '&' + key + '=' + parameters[ key ];
+		}
+		return this.httpGetApiUrl( request );
+	}
+
+	protected httpGetApiUrl( urlPart: string ): Observable<Response> {
 		const time = Date.now();
 		return this.http
 			.get( `${ this.apiUrl }${ urlPart }&htmlid=${ this.htmlId }&_=${ time }`, { headers: this.getHeaders } );

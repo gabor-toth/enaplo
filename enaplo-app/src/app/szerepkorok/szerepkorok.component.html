@@ -16,66 +16,35 @@
 
 	<div>
 		<mat-expansion-panel 
-				*ngFor="let entry of szerepkorNaplok; let i = index" 
-				[expanded]="!mapOfSzerepkorok[entry.azonosito]?.closed" (closed)="toggleSzerepkor(entry.azonosito,false)" (opened)="toggleSzerepkor(entry.azonosito,true)"
+				*ngFor="let entry of szerepkorNaplok; let orderIndex = index" 
+				[ngClass]="mapOfSzerepkorok[entry.getId()]?.hidden ? ( selectedType != 'all' ? 'hidden' : 'would-be-hidden' ) : ''"
+				[attr.data-index]="orderIndex" [attr.data-id]="entry.getId()"
+				[expanded]="!mapOfSzerepkorok[entry.getId()]?.closed" (closed)="toggleClosed(entry.getId(),true)" (opened)="toggleClosed(entry.getId(),false)"
 				draggable="true" (dragenter)="dragHandler.dragenter($event)" (dragstart)="dragHandler.dragstart($event)" (dragend)="dragHandler.dragend($event)"
-				[attr.data-index]="i" [attr.data-id]="entry.getId()"
 		>
 			<!--   [disableRipple]="true" -->
 	   		<mat-expansion-panel-header>
 		 		<mat-panel-title>
 		   		{{entry.nev}}
 		 		</mat-panel-title>
-		 		<!-- 
 				<mat-panel-description>
-					&nbsp;<mat-icon (click)="onClickSettings($event,entry.azonosito)">settings</mat-icon>
+					&nbsp;<button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation();">
+						<mat-icon>more_vert</mat-icon>
+					</button>
 				</mat-panel-description>
-		 		 -->
+				<mat-menu #menu="matMenu">
+				  	<button *ngIf="!mapOfSzerepkorok[entry.azonosito]?.hidden" mat-menu-item (click)="toggleHidden(entry.getId(),true)">Elrejt</button>
+				  	<button *ngIf="mapOfSzerepkorok[entry.azonosito]?.hidden" mat-menu-item (click)="toggleHidden(entry.getId(),false)">Felfed</button>
+				</mat-menu>
 	   		</mat-expansion-panel-header>
 	
-			<div *ngIf="entry.naplok.length == 0" class="">
+			<div *ngIf="entry.naplok.length == 0" class="would-be-hidden">
 				Nincs hozzárendelt napló.
 			</div>
 	
 			<div class='' *ngFor="let naplo of entry.naplok">
-				{{naplo.azonosito}}
+				{{naplo.display}}
 			</div>
-			
-			<!-- 
-			<div *ngIf="naplo['szerepkorok'].length > 0" class='szerepkorok'>
-				Szerepkörök: <div class='szerepkor' *ngFor="let szerepkor of naplo['szerepkorok']">{{szerepkor['azonosito']}}</div>
-			</div>
-			
-	  		<mat-expansion-panel *ngFor="let fonaplo of naplo.fonaplok" [expanded]="!mapOfSzerepkorok[fonaplo['sorszam']]" (closed)="toggleSzerepkor(fonaplo.sorszam,false)" (opened)="toggleSzerepkor(fonaplo.sorszam,true)">
-				<mat-expansion-panel-header>
-		  			<mat-panel-title>
-					{{fonaplo['originalString']}}
-		  			</mat-panel-title>
-					<mat-panel-description>
-						&nbsp;<mat-icon (click)="onClickSettings($event,naplo.sorszam)">settings</mat-icon>
-					</mat-panel-description>
-				</mat-expansion-panel-header>
-				
-				<div *ngIf="fonaplo['szerepkorok'].length > 0" class='szerepkorok'>
-					Szerepkörök: <div class='szerepkor' *ngFor="let szerepkor of fonaplo['szerepkorok']">{{szerepkor['azonosito']}}</div>
-				</div>
-	
-		  		<mat-expansion-panel *ngFor="let alnaplo of fonaplo['alnaplok']" [expanded]="!mapOfSzerepkorok[alnaplo['sorszam']]" (closed)="toggleSzerepkor(alnaplo.sorszam,false)" (opened)="toggleSzerepkor(alnaplo.sorszam,true)">
-					<mat-expansion-panel-header>
-			  			<mat-panel-title>
-						{{alnaplo['originalString']}}
-			  			</mat-panel-title>
-						<mat-panel-description>
-							&nbsp;<mat-icon (click)="onClickSettings($event,naplo.sorszam)">settings</mat-icon>
-						</mat-panel-description>
-					</mat-expansion-panel-header>
-					
-					<div *ngIf="alnaplo['szerepkorok'].length > 0" class='szerepkorok'>
-						Szerepkörök: <div class='szerepkor' *ngFor="let szerepkor of alnaplo['szerepkorok']">{{szerepkor['azonosito']}}</div>
-					</div>
-				</mat-expansion-panel>
-			</mat-expansion-panel>
-			 -->
 		</mat-expansion-panel>
 	</div>
 </div>

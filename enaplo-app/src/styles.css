@@ -94,3 +94,10 @@ mat-row.mat-row:hover {
   align-items: center;
 }
 
+.hidden {
+	display: none !important;
+}
+
+.would-be-hidden, .naplo-list .would-be-hidden .mat-expansion-panel-header-title {
+	color: rgba(0,0,0,0.3) !important;
+}

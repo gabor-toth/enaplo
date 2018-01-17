@@ -1,58 +1,16 @@
-import { DisplayListItem } from '../../common/component/display.list.item';
 import { Injectable } from '@angular/core';
 import { Headers, Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import { ServiceCallStateObserver } from '../../common/service/service-call-state-callback';
+import { DisplayListItem, ServiceCallStateObserver } from '../../common/export';
 
 import { Naplo, Szerepkor, NaploBase } from '../model/naplo-model';
 import { ValueItem } from '../model/value-item';
 import { EnaploBaseService } from './enaplo-base.service';
+import { FonaploFetcher } from './naplo.fetcher';
 import { FonaploParser } from './parsers/fonaplo-parser';
 import { NaploParser } from './parsers/naplo-parser';
 import { ValueListsService } from './value-lists.service';
-
-class FonaploFetcher {
-	private naploService: NaploService;
-	private stateObserverCallback: ServiceCallStateObserver;
-	private naplok: Naplo[];
-	private currentNaploIndex: number;
-
-	constructor( service: NaploService, stateObserver: ServiceCallStateObserver, naplok: Naplo[] ) {
-		this.naploService = service;
-		this.stateObserverCallback = stateObserver;
-		this.naplok = naplok;
-		this.currentNaploIndex = 0;
-	}
-
-	process(): Promise<Naplo[]> {
-		if ( this.currentNaploIndex == this.naplok.length ) {
-			return this.receivedLastResponse();
-		} else {
-			return this.fetchNext();
-		}
-	}
-
-	private fetchNext(): Promise<Naplo[]> {
-		this.stateObserverCallback.onServiceCallProgress( 100 * ( this.currentNaploIndex + 1 ) / ( this.naplok.length + 1 ) );
-		const naploSorszam = this.naplok[ this.currentNaploIndex ].sorszam;
-		return this.naploService.getFonaplok( naploSorszam ).then( response => this.receivedResponse( response ) );
-	}
-
-	private receivedResponse( response: Response ): Promise<Naplo[]> {
-		const fonaplok = new FonaploParser().setData( response.text() ).parse();
-		this.naplok[ this.currentNaploIndex ].setNaplok( fonaplok );
-		this.currentNaploIndex++;
-		return this.process();
-	}
-
-	private receivedLastResponse(): Promise<Naplo[]> {
-		this.stateObserverCallback.onServiceCallEnd();
-		this.naploService.cachedNaplok = this.naplok;
-		return Promise.resolve( this.naplok );
-	}
-
-}
 
 export class SzerepkorNaplok implements DisplayListItem {
 	public azonosito: number;
@@ -92,7 +50,7 @@ export class NaploService extends EnaploBaseService {
 			return Promise.resolve( this.cachedNaplok );
 		}
 		stateObserver.onServiceCallStart();
-		return this.httpGetApi( '?method=naplofa_load&id=%23page_enaplok' )
+		return this.httpGetApi( 'naplofa_load', { 'id': '%23page_enaplok' } )
 			.toPromise()
 			.then( response => this.receivedNaplokResponse( response, stateObserver ) )
 			.catch( error => this.handleError( error, stateObserver ) );
@@ -187,6 +145,6 @@ export class NaploService extends EnaploBaseService {
 	}
 
 	getFonaplok( naploId: string ): Promise<Response> {
-		return this.httpGetApi( '?method=get_naplo_items&parentid=enaploAktaFa&aktaid=' + naploId ).toPromise();
+		return this.httpGetApi( 'get_naplo_items', { 'parentid': 'enaploAktaFa', 'aktaid': naploId } ).toPromise();
 	}
 }

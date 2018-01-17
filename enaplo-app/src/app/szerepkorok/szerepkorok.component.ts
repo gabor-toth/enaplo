@@ -48,8 +48,13 @@ export class SzerepkorokComponent extends BaseComponent implements OnInit, Displ
 		this.setSetting( this.nameOfSelectedType, this.selectedType );
 	}
 
-	toggleSzerepkor( naploId: number, opened: boolean ): void {
-		DisplayListItemUtil.setClosed( this.mapOfSzerepkorok, naploId, !opened );
+	toggleClosed( naploId: number, closed: boolean ): void {
+		DisplayListItemUtil.setClosed( this.mapOfSzerepkorok, naploId, closed );
+		this.saveSettings();
+	}
+
+	toggleHidden( naploId: number, hidden: boolean ): void {
+		DisplayListItemUtil.setHidden( this.mapOfSzerepkorok, naploId, hidden );
 		this.saveSettings();
 	}
 

@@ -7,14 +7,9 @@ import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { AllMaterialModule } from './common/module/material.module';
-import { LocalStorageService } from './common/service/local-storage.service';
-import { NaplokComponent } from './naplok/naplok.component';
-import { NaploService } from './shared/service/naplo.service';
-import { ValueListsService } from './shared/service/value-lists.service';
-import { BeallitasokComponent } from './beallitasok/beallitasok.component';
-import { TeendokComponent } from './teendok/teendok.component';
-import { SzerepkorokComponent } from './szerepkorok/szerepkorok.component';
+import { AllMaterialModule, LocalStorageService } from './common/export';
+import { NaplokComponent, BeallitasokComponent, TeendokComponent, SzerepkorokComponent } from './components/export';
+import { NaploService, NapiJelentesService, ValueListsService } from './shared/export';
 
 @NgModule( {
 	declarations: [
@@ -33,7 +28,7 @@ import { SzerepkorokComponent } from './szerepkorok/szerepkorok.component';
 		HttpModule,
 		AppRoutingModule,
 	],
-	providers: [ NaploService, ValueListsService, LocalStorageService ],
+	providers: [ NaploService, NapiJelentesService, ValueListsService, LocalStorageService ],
 	bootstrap: [ AppComponent ]
 } )
 export class AppModule { }
