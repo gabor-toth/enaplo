@@ -1,12 +1,19 @@
+import { BaseDataRouter } from '../base-data-router';
 import { Request, Response, Router, NextFunction } from 'express';
-import { BaseRouter } from '../base-router';
 import { BaseRouterHandler } from '../base-router-handler';
+import { NapiJelentesHandler } from './napi-jelentes-router';
 import * as root from 'app-root-path';
 import * as path from 'path';
 
 class SimulatorHandler extends BaseRouterHandler {
 	private static RESPONSE_ROOT: string = path.join( root.path, 'server/routes/simulator/responses' );
+	private napiJelentesDatastore: Nedb;
 	private splittedExtraData: string[];
+
+	constructor() {
+		super();
+		this.napiJelentesDatastore = BaseDataRouter.getDatastore( 'napi_jelentes' );
+	}
 
 	public handle(): void {
 		const method = this.request.query.method;
@@ -30,10 +37,14 @@ class SimulatorHandler extends BaseRouterHandler {
 				this.sendItemWithoutId( method );
 				break;
 			case 'get_naplo_items':
-				this.sendItemWithIdFromRequest( method, 'aktaid' );
+				this.sendItemWithIdsFromRequest( method, [ 'aktaid' ] );
 				break;
 			case 'szerepkodokbynaplo':
 				this.sendItemWithIsdFromExtraData( method );
+				break;
+			case 'bejegyzes_karton_load':
+				// new NapiJelentesHandler().startDataRequest( this.napiJelentesDatastore, this.request, this.response ).get();
+				this.sendItemWithIdsFromRequest( method, [ 'aktaid', 'naploid' ] );
 				break;
 			case 'vallalkozoinaplokkarton_load':
 			default:
@@ -42,20 +53,28 @@ class SimulatorHandler extends BaseRouterHandler {
 		}
 	}
 
-	private sendItemWithIdFromRequest( baseFileName: string, idParameter: string ) {
-		const id = this.request.query[ idParameter ];
-		if ( !this.checkParameter( idParameter, id ) ) {
-			return;
+	private sendItemWithIdsFromRequest( baseFileName: string, idParameters: string[] ) {
+		const ids = [];
+		for ( const idParameter of idParameters ) {
+			const id = this.request.query[ idParameter ];
+			if ( !this.checkParameter( idParameter, id ) ) {
+				return;
+			}
+			ids.push( id );
 		}
-		this.sendItemWithId( baseFileName, id );
+		this.sendItemWithIds( baseFileName, ids );
 	}
 
 	sendItemWithIsdFromExtraData( baseFileName: string ) {
-		this.sendItemWithId( baseFileName, this.splittedExtraData[ 0 ] + '_' + this.splittedExtraData[ 1 ] );
+		this.sendItemWithIds( baseFileName, [ this.splittedExtraData[ 0 ], this.splittedExtraData[ 1 ] ] );
 	}
 
-	sendItemWithId( baseFileName: string, id: string ) {
-		this.response.sendFile( baseFileName + '_' + id, { 'root': SimulatorHandler.RESPONSE_ROOT } );
+	sendItemWithIds( baseFileName: string, ids: string[] ) {
+		let fileName = baseFileName;
+		for ( const id of ids ) {
+			fileName += '_' + id;
+		}
+		this.response.sendFile( fileName, { 'root': SimulatorHandler.RESPONSE_ROOT } );
 	}
 
 	sendItemWithoutId( baseFileName: string ) {
@@ -92,7 +111,7 @@ class SimulatorHandler extends BaseRouterHandler {
 	}
 }
 
-export class RouterSimulator extends BaseRouter {
+export class RouterSimulator {
 	private delayResponse = 0;
 
 	register( router: Router ) {

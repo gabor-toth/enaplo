@@ -41,4 +41,7 @@ export abstract class EnaploBaseService extends BaseService {
 			.get( `${ this.backendUrl }${ urlPart }`, { headers: this.getHeaders } );
 	}
 
+	protected dateToString( date: Date ): string {
+		return date == null ? '' : date.toISOString().slice( 0, 10 ).replace( /-/g, '.' ) + '.';
+	}
 }

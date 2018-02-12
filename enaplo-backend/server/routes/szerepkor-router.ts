@@ -5,49 +5,23 @@ import { BaseDataRouter } from './base-data-router';
 import { BaseDataRouterHandler } from './base-data-router-handler';
 import { BaseRouterHandler } from './base-router-handler';
 
-class GetSzerepkorokHandler extends BaseDataRouterHandler {
-	protected handle(): void {
-		const data = this.datastore.getAllData();
-		this.response.json( data );
+class SzerepkorHandler extends BaseDataRouterHandler<SzerepkorHandler> {
+	public getAll(): void {
+		super.getAll();
 	}
-}
 
-class GetSzerepkorHandler extends BaseDataRouterHandler {
-	protected handle(): void {
+	public get(): void {
 		const id = this.request.params.id;
-		if ( !this.checkParameter( 'id', id ) ) {
-			return;
-		}
-		return this.datastore.findOne( { '_id': id }, ( error, document ) => {
-			// TODO use https://www.npmjs.com/package/nedb-promise
-			if ( error === null ) {
-				this.response.json( document );
-			} else {
-				console.error( error.message );
-				this.response.sendStatus( 404 );
-			}
-		} );
+		super.getById( id );
 	}
-}
 
-class PutSzerepkorHandler extends BaseDataRouterHandler {
-	protected handle(): void {
+	public put(): void {
 		const id = this.request.params.id;
-		if ( !this.checkParameter( 'id', id ) ) {
-			return;
-		}
 		const data = this.getParsedJsonBody();
 		if ( data === undefined ) {
 			return;
 		}
-		this.datastore.insert( { '_id': id, 'azonosito': id, 'nev': data.nev }, ( error, document ) => {
-			if ( error === null ) {
-				this.response.sendStatus( 200 );
-			} else {
-				console.error( error.message );
-				this.response.sendStatus( 409 );
-			}
-		} );
+		super.putById( id, { 'azonosito': id, 'nev': data.nev } );
 	}
 }
 
@@ -62,12 +36,12 @@ export class RouterSzerepkor extends BaseDataRouter {
 
 	register( router: Router ): void {
 		router.get( '/api/szerepkodok', ( request: Request, response: Response, next: NextFunction ) =>
-			new GetSzerepkorokHandler().handleDataRequest( this.datastore, request, response ) );
+			new SzerepkorHandler().startDataRequest( this.datastore, request, response ).getAll() );
 
 		router.get( '/api/szerepkodok/:id', ( request: Request, response: Response, next: NextFunction ) =>
-			new GetSzerepkorHandler().handleDataRequest( this.datastore, request, response ) );
+			new SzerepkorHandler().startDataRequest( this.datastore, request, response ).get() );
 
 		router.put( '/api/szerepkodok/:id', ( request: Request, response: Response, next: NextFunction ) =>
-			new PutSzerepkorHandler().handleDataRequest( this.datastore, request, response ) );
+			new SzerepkorHandler().startDataRequest( this.datastore, request, response ).put() );
 	}
 }

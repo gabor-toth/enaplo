@@ -24,9 +24,8 @@ export class NapiJelentesFetcher {
 	}
 
 	private fetchNext(): Promise<Naplo[]> {
-		const naploSorszam = this.naplok[ this.currentIndex ].sorszam;
-		// return this.napiJelentesService.getFonaplok( naploSorszam ).then( response => this.receivedResponse( response ) );
-		return null;
+		const naplo = this.naplok[ this.currentIndex ];
+		return this.napiJelentesService.getNapiJelentes( null, naplo.aktaId, naplo.sorszam ).then( response => this.receivedResponse( response ) );
 	}
 
 	private receivedResponse( response: Response ): Promise<Naplo[]> {

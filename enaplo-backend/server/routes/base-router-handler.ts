@@ -9,9 +9,13 @@ export abstract class BaseRouterHandler {
 	protected abstract handle(): void;
 
 	public handleRequest( request: Request, response: Response ): void {
+		this.startRequest( request, response );
+		this.handle();
+	}
+
+	public startRequest( request: Request, response: Response ): void {
 		this.request = request;
 		this.response = response;
-		this.handle();
 	}
 
 	protected checkParameter( parameterName: string, parameterValue: any ): boolean {

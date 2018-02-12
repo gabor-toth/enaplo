@@ -29,17 +29,17 @@
     "morgan": "^1.9.0",
     "nedb": "^1.8.0",
     "slashes": "^1.0.5",
-    "start-server-webpack-plugin": "^2.2.0",
+    "start-server-webpack-plugin": "^2.2.1",
     "webpack-node-externals": "^1.6.0"
   },
   "devDependencies": {
     "@types/htmlparser2": "^3.7.31",
     "@types/morgan": "^1.7.35",
     "@types/nedb": "^1.8.5",
-    "@types/node": "^8.5.1",
+    "@types/node": "^8.9.1",
     "ts-loader": "^2.3.7",
     "tslint": "~5.3.2",
-    "typescript": "^2.6.2",
+    "typescript": "^2.7.1",
     "webpack": "^3.10.0"
   }
 }
