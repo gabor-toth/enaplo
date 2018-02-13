@@ -1,4 +1,3 @@
-import { forEachChild } from 'typescript';
 export class Szemely {
 	public _type: string;
 	public nev: string;

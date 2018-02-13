@@ -24,6 +24,15 @@ export abstract class BaseHtmlParser<T extends BaseHtmlParser<T>> extends BasePa
 		}
 	}
 
+	protected match( regexp: string ): string[] {
+		const matches = this.data.substr( this.position ).match( regexp );
+		if ( matches == null ) {
+			throw new SyntaxError( 'Expected regex string not found at position ' + this.position );
+		}
+		this.position += matches[ 0 ].length;
+		return matches;
+	}
+
 	protected skip( exptectedString: string ): void {
 		if ( exptectedString != this.data.substr( this.position, exptectedString.length ) ) {
 			throw new SyntaxError( 'Expected string not found at position ' + this.position );
