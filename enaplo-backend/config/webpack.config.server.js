@@ -9,6 +9,7 @@ module.exports = {
     ],
     watch: true,
     target: 'node',
+    mode: 'development',
     externals: [nodeExternals({
         whitelist: ['webpack/hot/poll?1000']
     })],
@@ -17,11 +18,11 @@ module.exports = {
         //extensions: [ '.js'],
     },
     module: {
-        loaders: [{
+        rules: [{
             // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
             test: /\.tsx?$/,
-            exclude: '/node_modules',
-            loader: 'ts-loader'
+            use: 'ts-loader',
+            exclude: '/node_modules'
         }]
     },
     plugins: [
