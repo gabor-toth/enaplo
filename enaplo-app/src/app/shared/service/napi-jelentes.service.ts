@@ -34,6 +34,7 @@ export class NapiJelentesService extends EnaploBaseService {
 
 	protected receivedResponse( response: Response ): Promise<any> {
 		const naploSkeletons = new NaploParser().setData( response.text() ).parse();
-		return new FonaploFetcher( this, stateObserver, naploSkeletons ).process();
+		// return new FonaploFetcher( this, stateObserver, naploSkeletons ).process();
+		return null;
 	}
 }

@@ -19,8 +19,8 @@ class NapiJelentesCollector implements Handler {
 
 	public onopentag( tagname: string, attributes: { [ type: string ]: string } ): void {
 		if ( tagname === 'div' ) {
-			this.item = new Naplo();
-			this.item.sorszam = attributes.azon;
+			this.item = new NapiJelentes();
+			// this.item.sorszam = attributes.azon;
 		} else if ( tagname == 'strong' ) {
 			this.inStrong = true;
 		}
@@ -41,6 +41,7 @@ class NapiJelentesCollector implements Handler {
 		}
 
 		let index = 1;
+		/*
 		this.item.azonosito = matches[ index++ ];
 		this.item.nev = matches[ index++ ];
 		this.item.iranyitoszam = matches[ index++ ];
@@ -49,6 +50,7 @@ class NapiJelentesCollector implements Handler {
 		this.item.tulajdonos = new Szemely();
 		this.item.tulajdonos.nev = matches[ index++ ];
 		this.item.tulajdonos.nuj = matches[ index++ ];
+		*/
 	}
 
 	public getData(): NapiJelentes {
@@ -63,20 +65,20 @@ export class NapiJelentesParser extends BaseHtmlParser<NapiJelentesParser> {
 
 	public parse(): NapiJelentes {
 		const fields = this.match( '[^\\(]*\\(([^,]*),\'(.*)\',\'(.*)\',\'(.*)\',\'(.*)\',\'(.*)\',\'(.*)\',\'(.*)\',\'(.*)\',\'(.*)\',\'(.*)\',\'(.*)\',\'(.*)\',\'(.*)\',{napijelentes:(.*),napi_bejegyzes:(.*)}\\)' );
-		const data = new NapiJelentes( fields, valueListsService );
+		const data = new NapiJelentes(); // new NapiJelentes( fields, valueListsService );
+		// const collector = new NapiJelentesCollector();
 
 		this.skip( ';replaceTableContent(\'table_bejegyzesek\',\'' );
 		let html = this.readString();
-		this.parseHtml( html, collector );
+		// this.parseHtml( html, collector );
 
 		this.skip( ';replaceTableContent(\'table_letszam\',\'' );
 		html = this.readString();
-		this.parseHtml( html, collector );
+		// this.parseHtml( html, collector );
 
 		this.skip( ';replaceTableContent(\'table_letszam_alvallakozoi\',\'' );
 		html = this.readString();
 
-		const collector = new NapiJelentesCollector();
 		return data;
 	}
 }
