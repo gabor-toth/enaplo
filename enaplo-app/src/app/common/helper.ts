@@ -1,6 +1,5 @@
 import { DataSource } from '@angular/cdk/collections';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { Observable, of as observableOf } from 'rxjs';
 
 export class ArrayDataSource<T> extends DataSource<T> {
 	data: T[];
@@ -11,7 +10,7 @@ export class ArrayDataSource<T> extends DataSource<T> {
 	}
 
 	connect(): Observable<T[]> {
-		return Observable.of( this.data );
+		return observableOf( this.data );
 	}
 
 	disconnect() { }

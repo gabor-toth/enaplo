@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export abstract class BaseSubscriberToPromise<T> {
 	protected observer: Observable<T>;

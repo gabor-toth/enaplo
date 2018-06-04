@@ -2,6 +2,7 @@ import { Headers, Http, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
 
 import { EnaploBaseService } from './enaplo-base.service';
+import { NaploParser } from './parsers/naplo-parser';
 import { ValueListsService } from './value-lists.service';
 
 @Injectable()

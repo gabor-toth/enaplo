@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, Response } from '@angular/http';
-import 'rxjs/add/operator/toPromise';
 
 import { DisplayListItem, ServiceCallStateObserver } from '../../common/export';
 

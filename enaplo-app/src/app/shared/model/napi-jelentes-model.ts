@@ -69,10 +69,10 @@ export class NapiJelentes {
 			this.minimumHomerseklet = Number.parseFloat( fields[ p++ ] );
 			this.maximumHomerseklet = Number.parseFloat( fields[ p++ ] );
 			this.unknown2 = fields[ p++ ];
-			this.szelero = fields[ p++ ];
-			this.szelirany = fields[ p++ ];
-			this.egkep = fields[ p++ ];
-			this.csapadek = fields[ p++ ];
+			this.szelero = Number.parseInt( fields[ p++ ] );
+			this.szelirany = Number.parseInt( fields[ p++ ] );
+			this.egkep = Number.parseInt( fields[ p++ ] );
+			this.csapadek = Number.parseInt( fields[ p++ ] );
 			this.egyebIdojaras = fields[ p++ ];
 			this.munkavegzes = '1' == fields[ p++ ];
 			this.munkaido_kezdet = fields[ p++ ];
